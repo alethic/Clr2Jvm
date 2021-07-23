@@ -1,0 +1,17 @@
+plugins {
+	id 'groovy'
+	id 'java-gradle-plugin'
+}
+
+gradlePlugin {
+	plugins {
+		jniLibraryPublish {
+			id = 'solutions.alethic.gradle.plugins.jni-library-publish'
+			implementationClass = 'solutions.alethic.gradle.plugins.JniLibraryPublishPlugin'
+		}
+	}
+}
+
+dependencies {
+	compileOnly localGroovy()
+}

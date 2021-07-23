@@ -1,0 +1,5775 @@
+[
+    {
+        "Name": "GetVersion",
+        "Prototype": "jint        (*GetVersion)(JNIEnv*);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": []
+    },
+    {
+        "Name": "DefineClass",
+        "Prototype": "jclass      (*DefineClass)(JNIEnv*, const char, jobject, const jbyte*, jsize);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jclass"
+        },
+        "Parameters": [
+            {
+                "Name": "name",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "loader",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "const jbyte*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "bufferLength",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "FindClass",
+        "Prototype": "jclass      (*FindClass)(JNIEnv*, const char*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jclass"
+        },
+        "Parameters": [
+            {
+                "Name": "classname",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan":  true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "FromReflectedMethod",
+        "Prototype": "jmethodID   (*FromReflectedMethod)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jmethodID"
+        },
+        "Parameters": [
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "FromReflectedField",
+        "Prototype": "jfieldID    (*FromReflectedField)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jfieldID"
+        },
+        "Parameters": [
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ToReflectedMethod",
+        "Prototype": "jobject     (*ToReflectedMethod)(JNIEnv*, jclass, jmethodID, jboolean);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "isStatic",
+                "Type": {
+                    "Name": "jboolean"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetSuperclass",
+        "Prototype": "jclass      (*GetSuperclass)(JNIEnv*, jclass);",
+        "ReturnType": {
+            "Name": "jclass"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "IsAssignableFrom",
+        "Prototype": "jboolean    (*IsAssignableFrom)(JNIEnv*, jclass, jclass);",
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "class1",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "class2",
+                "Type": {
+                    "Name": "jclass"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ToReflectedField",
+        "Prototype": "jobject     (*ToReflectedField)(JNIEnv*, jclass, jfieldID, jboolean);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "isStatic",
+                "Type": {
+                    "Name": "jboolean"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "Throw",
+        "Prototype": "jint        (*Throw)(JNIEnv*, jthrowable);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "toThrow",
+                "Type": {
+                    "Name": "jthrowable"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ThrowNew",
+        "Prototype": "jint        (*ThrowNew)(JNIEnv*, jclass, const char*);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "message",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ExceptionOccurred",
+        "Prototype": "jthrowable  (*ExceptionOccurred)(JNIEnv*);",
+        "ReturnType": {
+            "Name": "jthrowable"
+        },
+        "Parameters": []
+    },
+    {
+        "Name": "ExceptionDescribe",
+        "Prototype": "void        (*ExceptionDescribe)(JNIEnv*);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": []
+    },
+    {
+        "Name": "ExceptionClear",
+        "Prototype": "void        (*ExceptionClear)(JNIEnv*);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": []
+    },
+    {
+        "Name": "FatalError",
+        "Prototype": "void        (*FatalError)(JNIEnv*, const char*);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "message",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "PushLocalFrame",
+        "Prototype": "jint        (*PushLocalFrame)(JNIEnv*, jint);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "capacity",
+                "Type": {
+                    "Name": "jint"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "PopLocalFrame",
+        "Prototype": "jobject     (*PopLocalFrame)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "result",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewGlobalRef",
+        "Prototype": "jobject     (*NewGlobalRef)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "DeleteGlobalRef",
+        "Prototype": "void        (*DeleteGlobalRef)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "DeleteLocalRef",
+        "Prototype": "void        (*DeleteLocalRef)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "IsSameObject",
+        "Prototype": "jboolean    (*IsSameObject)(JNIEnv*, jobject, jobject);",
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "object1",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "object2",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewLocalRef",
+        "Prototype": "jobject     (*NewLocalRef)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "EnsureLocalCapacity",
+        "Prototype": "jint        (*EnsureLocalCapacity)(JNIEnv*, jint);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "capacity",
+                "Type": {
+                    "Name": "jint"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "AllocObject",
+        "Prototype": "jobject     (*AllocObject)(JNIEnv*, jclass);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewObject",
+        "Prototype": "jobject     (*NewObject)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewObjectV",
+        "Prototype": "jobject     (*NewObjectV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewObjectA",
+        "Prototype": "jobject     (*NewObjectA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "GetObjectClass",
+        "Prototype": "jclass      (*GetObjectClass)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jclass"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "IsInstanceOf",
+        "Prototype": "jboolean    (*IsInstanceOf)(JNIEnv*, jobject, jclass);",
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetMethodID",
+        "Prototype": "jmethodID   (*GetMethodID)(JNIEnv*, jclass, const char*, const char*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jmethodID"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "name",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "signature",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallObjectMethod",
+        "Prototype": "jobject     (*CallObjectMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallObjectMethodV",
+        "Prototype": "jobject     (*CallObjectMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallObjectMethodA",
+        "Prototype": "jobject     (*CallObjectMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallBooleanMethod",
+        "Prototype": "jboolean    (*CallBooleanMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallBooleanMethodV",
+        "Prototype": "jboolean    (*CallBooleanMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallBooleanMethodA",
+        "Prototype": "jboolean    (*CallBooleanMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallByteMethod",
+        "Prototype": "jbyte       (*CallByteMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallByteMethodV",
+        "Prototype": "jbyte       (*CallByteMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallByteMethodA",
+        "Prototype": "jbyte       (*CallByteMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallCharMethod",
+        "Prototype": "jchar       (*CallCharMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallCharMethodV",
+        "Prototype": "jchar       (*CallCharMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallCharMethodA",
+        "Prototype": "jchar       (*CallCharMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallShortMethod",
+        "Prototype": "jshort      (*CallShortMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallShortMethodV",
+        "Prototype": "jshort      (*CallShortMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallShortMethodA",
+        "Prototype": "jshort      (*CallShortMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallIntMethod",
+        "Prototype": "jint        (*CallIntMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallIntMethodV",
+        "Prototype": "jint        (*CallIntMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallIntMethodA",
+        "Prototype": "jint        (*CallIntMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallLongMethod",
+        "Prototype": "jlong       (*CallLongMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallLongMethodV",
+        "Prototype": "jlong       (*CallLongMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallLongMethodA",
+        "Prototype": "jlong       (*CallLongMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallFloatMethod",
+        "Prototype": "jfloat      (*CallFloatMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallFloatMethodV",
+        "Prototype": "jfloat      (*CallFloatMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallFloatMethodA",
+        "Prototype": "jfloat      (*CallFloatMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallDoubleMethod",
+        "Prototype": "jdouble     (*CallDoubleMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallDoubleMethodV",
+        "Prototype": "jdouble     (*CallDoubleMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallDoubleMethodA",
+        "Prototype": "jdouble     (*CallDoubleMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallVoidMethod",
+        "Prototype": "void        (*CallVoidMethod)(JNIEnv*, jobject, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallVoidMethodV",
+        "Prototype": "void        (*CallVoidMethodV)(JNIEnv*, jobject, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallVoidMethodA",
+        "Prototype": "void        (*CallVoidMethodA)(JNIEnv*, jobject, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualObjectMethod",
+        "Prototype": "jobject     (*CallNonvirtualObjectMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualObjectMethodV",
+        "Prototype": "jobject     (*CallNonvirtualObjectMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualObjectMethodA",
+        "Prototype": "jobject     (*CallNonvirtualObjectMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualBooleanMethod",
+        "Prototype": "jboolean    (*CallNonvirtualBooleanMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualBooleanMethodV",
+        "Prototype": "jboolean    (*CallNonvirtualBooleanMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualBooleanMethodA",
+        "Prototype": "jboolean    (*CallNonvirtualBooleanMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualByteMethod",
+        "Prototype": "jbyte       (*CallNonvirtualByteMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualByteMethodV",
+        "Prototype": "jbyte       (*CallNonvirtualByteMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualByteMethodA",
+        "Prototype": "jbyte       (*CallNonvirtualByteMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualCharMethod",
+        "Prototype": "jchar       (*CallNonvirtualCharMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualCharMethodV",
+        "Prototype": "jchar       (*CallNonvirtualCharMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "obj",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualCharMethodA",
+        "Prototype": "jchar       (*CallNonvirtualCharMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualShortMethod",
+        "Prototype": "jshort      (*CallNonvirtualShortMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualShortMethodV",
+        "Prototype": "jshort      (*CallNonvirtualShortMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "obj",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualShortMethodA",
+        "Prototype": "jshort      (*CallNonvirtualShortMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualIntMethod",
+        "Prototype": "jint        (*CallNonvirtualIntMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualIntMethodV",
+        "Prototype": "jint        (*CallNonvirtualIntMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "obj",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualIntMethodA",
+        "Prototype": "jint        (*CallNonvirtualIntMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualLongMethod",
+        "Prototype": "jlong       (*CallNonvirtualLongMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualLongMethodV",
+        "Prototype": "jlong       (*CallNonvirtualLongMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualLongMethodA",
+        "Prototype": "jlong       (*CallNonvirtualLongMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualFloatMethod",
+        "Prototype": "jfloat      (*CallNonvirtualFloatMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualFloatMethodV",
+        "Prototype": "jfloat      (*CallNonvirtualFloatMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualFloatMethodA",
+        "Prototype": "jfloat      (*CallNonvirtualFloatMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualDoubleMethod",
+        "Prototype": "jdouble     (*CallNonvirtualDoubleMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualDoubleMethodV",
+        "Prototype": "jdouble     (*CallNonvirtualDoubleMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualDoubleMethodA",
+        "Prototype": "jdouble     (*CallNonvirtualDoubleMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualVoidMethod",
+        "Prototype": "void        (*CallNonvirtualVoidMethod)(JNIEnv*, jobject, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualVoidMethodV",
+        "Prototype": "void        (*CallNonvirtualVoidMethodV)(JNIEnv*, jobject, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallNonvirtualVoidMethodA",
+        "Prototype": "void        (*CallNonvirtualVoidMethodA)(JNIEnv*, jobject, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "GetFieldID",
+        "Prototype": "jfieldID    (*GetFieldID)(JNIEnv*, jclass, const char*, const char*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfieldID"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "name",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "signature",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetObjectField",
+        "Prototype": "jobject     (*GetObjectField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetBooleanField",
+        "Prototype": "jboolean    (*GetBooleanField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetByteField",
+        "Prototype": "jbyte       (*GetByteField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetCharField",
+        "Prototype": "jchar       (*GetCharField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetShortField",
+        "Prototype": "jshort      (*GetShortField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetIntField",
+        "Prototype": "jint        (*GetIntField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetLongField",
+        "Prototype": "jlong       (*GetLongField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetFloatField",
+        "Prototype": "jfloat      (*GetFloatField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetDoubleField",
+        "Prototype": "jdouble     (*GetDoubleField)(JNIEnv*, jobject, jfieldID);",
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetObjectField",
+        "Prototype": "void        (*SetObjectField)(JNIEnv*, jobject, jfieldID, jobject);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetBooleanField",
+        "Prototype": "void        (*SetBooleanField)(JNIEnv*, jobject, jfieldID, jboolean);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jboolean"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetByteField",
+        "Prototype": "void        (*SetByteField)(JNIEnv*, jobject, jfieldID, jbyte);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jbyte"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetCharField",
+        "Prototype": "void        (*SetCharField)(JNIEnv*, jobject, jfieldID, jchar);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jchar"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetShortField",
+        "Prototype": "void        (*SetShortField)(JNIEnv*, jobject, jfieldID, jshort);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jshort"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetIntField",
+        "Prototype": "void        (*SetIntField)(JNIEnv*, jobject, jfieldID, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jint"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetLongField",
+        "Prototype": "void        (*SetLongField)(JNIEnv*, jobject, jfieldID, jlong);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jlong"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetFloatField",
+        "Prototype": "void        (*SetFloatField)(JNIEnv*, jobject, jfieldID, jfloat);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jfloat"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetDoubleField",
+        "Prototype": "void        (*SetDoubleField)(JNIEnv*, jobject, jfieldID, jdouble);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jdouble"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticMethodID",
+        "Prototype": "jmethodID   (*GetStaticMethodID)(JNIEnv*, jclass, const char*, const char*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jmethodID"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "name",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "signature",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticObjectMethod",
+        "Prototype": "jobject     (*CallStaticObjectMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticObjectMethodV",
+        "Prototype": "jobject     (*CallStaticObjectMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticObjectMethodA",
+        "Prototype": "jobject     (*CallStaticObjectMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticBooleanMethod",
+        "Prototype": "jboolean    (*CallStaticBooleanMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticBooleanMethodV",
+        "Prototype": "jboolean    (*CallStaticBooleanMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticBooleanMethodA",
+        "Prototype": "jboolean    (*CallStaticBooleanMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticByteMethod",
+        "Prototype": "jbyte       (*CallStaticByteMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticByteMethodV",
+        "Prototype": "jbyte       (*CallStaticByteMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticByteMethodA",
+        "Prototype": "jbyte       (*CallStaticByteMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticCharMethod",
+        "Prototype": "jchar       (*CallStaticCharMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticCharMethodV",
+        "Prototype": "jchar       (*CallStaticCharMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticCharMethodA",
+        "Prototype": "jchar       (*CallStaticCharMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticShortMethod",
+        "Prototype": "jshort      (*CallStaticShortMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticShortMethodV",
+        "Prototype": "jshort      (*CallStaticShortMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticShortMethodA",
+        "Prototype": "jshort      (*CallStaticShortMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticIntMethod",
+        "Prototype": "jint        (*CallStaticIntMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticIntMethodV",
+        "Prototype": "jint        (*CallStaticIntMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticIntMethodA",
+        "Prototype": "jint        (*CallStaticIntMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticLongMethod",
+        "Prototype": "jlong       (*CallStaticLongMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticLongMethodV",
+        "Prototype": "jlong       (*CallStaticLongMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticLongMethodA",
+        "Prototype": "jlong       (*CallStaticLongMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticFloatMethod",
+        "Prototype": "jfloat      (*CallStaticFloatMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticFloatMethodV",
+        "Prototype": "jfloat      (*CallStaticFloatMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticFloatMethodA",
+        "Prototype": "jfloat      (*CallStaticFloatMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticDoubleMethod",
+        "Prototype": "jdouble     (*CallStaticDoubleMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticDoubleMethodV",
+        "Prototype": "jdouble     (*CallStaticDoubleMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticDoubleMethodA",
+        "Prototype": "jdouble     (*CallStaticDoubleMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticVoidMethod",
+        "Prototype": "void        (*CallStaticVoidMethod)(JNIEnv*, jclass, jmethodID, ...);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticVoidMethodV",
+        "Prototype": "void        (*CallStaticVoidMethodV)(JNIEnv*, jclass, jmethodID, va_list);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "va_list"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "CallStaticVoidMethodA",
+        "Prototype": "void        (*CallStaticVoidMethodA)(JNIEnv*, jclass, jmethodID, jvalue*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "method",
+                "Type": {
+                    "Name": "jmethodID"
+                }
+            },
+            {
+                "Name": "args",
+                "Type": {
+                    "Name": "jvalue*"
+                },
+                "IsParamArray": true
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticFieldID",
+        "Prototype": "jfieldID    (*GetStaticFieldID)(JNIEnv*, jclass, const char*, const char*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jfieldID"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "name",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "signature",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticObjectField",
+        "Prototype": "jobject     (*GetStaticObjectField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticBooleanField",
+        "Prototype": "jboolean    (*GetStaticBooleanField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticByteField",
+        "Prototype": "jbyte       (*GetStaticByteField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jbyte"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticCharField",
+        "Prototype": "jchar       (*GetStaticCharField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jchar"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticShortField",
+        "Prototype": "jshort      (*GetStaticShortField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jshort"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticIntField",
+        "Prototype": "jint        (*GetStaticIntField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticLongField",
+        "Prototype": "jlong       (*GetStaticLongField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticFloatField",
+        "Prototype": "jfloat      (*GetStaticFloatField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jfloat"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStaticDoubleField",
+        "Prototype": "jdouble     (*GetStaticDoubleField)(JNIEnv*, jclass, jfieldID);",
+        "ReturnType": {
+            "Name": "jdouble"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticObjectField",
+        "Prototype": "void        (*SetStaticObjectField)(JNIEnv*, jclass, jfieldID, jobject);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticBooleanField",
+        "Prototype": "void        (*SetStaticBooleanField)(JNIEnv*, jclass, jfieldID, jboolean);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jboolean"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticByteField",
+        "Prototype": "void        (*SetStaticByteField)(JNIEnv*, jclass, jfieldID, jbyte);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jbyte"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticCharField",
+        "Prototype": "void        (*SetStaticCharField)(JNIEnv*, jclass, jfieldID, jchar);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jchar"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticShortField",
+        "Prototype": "void        (*SetStaticShortField)(JNIEnv*, jclass, jfieldID, jshort);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jshort"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticIntField",
+        "Prototype": "void        (*SetStaticIntField)(JNIEnv*, jclass, jfieldID, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jint"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticLongField",
+        "Prototype": "void        (*SetStaticLongField)(JNIEnv*, jclass, jfieldID, jlong);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jlong"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticFloatField",
+        "Prototype": "void        (*SetStaticFloatField)(JNIEnv*, jclass, jfieldID, jfloat);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jfloat"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetStaticDoubleField",
+        "Prototype": "void        (*SetStaticDoubleField)(JNIEnv*, jclass, jfieldID, jdouble);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "field",
+                "Type": {
+                    "Name": "jfieldID"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jdouble"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewString",
+        "Prototype": "jstring     (*NewString)(JNIEnv*, const jchar*, jsize);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jstring"
+        },
+        "Parameters": [
+            {
+                "Name": "unicodeChars",
+                "Type": {
+                    "Name": "jchar*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStringLength",
+        "Prototype": "jsize       (*GetStringLength)(JNIEnv*, jstring);",
+        "ReturnType": {
+            "Name": "jsize"
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStringChars",
+        "Prototype": "const jchar* (*GetStringChars)(JNIEnv*, jstring, jboolean*);",
+        "ReturnType": {
+            "Name": "const jchar*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseStringChars",
+        "Prototype": "void        (*ReleaseStringChars)(JNIEnv*, jstring, const jchar*);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            },
+            {
+                "Name": "chars",
+                "Type": {
+                    "Name": "jchar*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewStringUTF",
+        "Prototype": "jstring     (*NewStringUTF)(JNIEnv*, const char*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jstring"
+        },
+        "Parameters": [
+            {
+                "Name": "bytes",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStringUTFLength",
+        "Prototype": "jsize       (*GetStringUTFLength)(JNIEnv*, jstring);",
+        "ReturnType": {
+            "Name": "jsize"
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStringUTFChars",
+        "Prototype": "const char* (*GetStringUTFChars)(JNIEnv*, jstring, jboolean*);",
+        "ReturnType": {
+            "Name": "const char*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseStringUTFChars",
+        "Prototype": "void        (*ReleaseStringUTFChars)(JNIEnv*, jstring, const char*);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            },
+            {
+                "Name": "utf",
+                "Type": {
+                    "Name": "const char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetArrayLength",
+        "Prototype": "jsize       (*GetArrayLength)(JNIEnv*, jarray);",
+        "ReturnType": {
+            "Name": "jsize"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jarray"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewObjectArray",
+        "Prototype": "jobjectArray (*NewObjectArray)(JNIEnv*, jsize, jclass, jobject);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobjectArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "elementClass",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "initialElement",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetObjectArrayElement",
+        "Prototype": "jobject     (*GetObjectArrayElement)(JNIEnv*, jobjectArray, jsize);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jobjectArray"
+                }
+            },
+            {
+                "Name": "index",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetObjectArrayElement",
+        "Prototype": "void        (*SetObjectArrayElement)(JNIEnv*, jobjectArray, jsize, jobject);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jobjectArray"
+                }
+            },
+            {
+                "Name": "index",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "value",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewBooleanArray",
+        "Prototype": "jbooleanArray (*NewBooleanArray)(JNIEnv*, jsize);",
+        "ReturnType": {
+            "Name": "jbooleanArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewByteArray",
+        "Prototype": "jbyteArray  (*NewByteArray)(JNIEnv*, jsize);",
+        "ReturnType": {
+            "Name": "jbyteArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewCharArray",
+        "Prototype": "jcharArray  (*NewCharArray)(JNIEnv*, jsize);",
+        "ReturnType": {
+            "Name": "jcharArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewShortArray",
+        "Prototype": "jshortArray (*NewShortArray)(JNIEnv*, jsize);",
+        "ReturnType": {
+            "Name": "jshortArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewIntArray",
+        "Prototype": "jintArray   (*NewIntArray)(JNIEnv*, jsize);",
+        "ReturnType": {
+            "Name": "jintArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewLongArray",
+        "Prototype": "jlongArray  (*NewLongArray)(JNIEnv*, jsize);",
+        "ReturnType": {
+            "Name": "jlongArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewFloatArray",
+        "Prototype": "jfloatArray (*NewFloatArray)(JNIEnv*, jsize);",
+        "ReturnType": {
+            "Name": "jfloatArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewDoubleArray",
+        "Prototype": "jdoubleArray (*NewDoubleArray)(JNIEnv*, jsize);",
+        "ReturnType": {
+            "Name": "jdoubleArray"
+        },
+        "Parameters": [
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetBooleanArrayElements",
+        "Prototype": "jboolean*   (*GetBooleanArrayElements)(JNIEnv*, jbooleanArray, jboolean*);",
+        "ReturnType": {
+            "Name": "jboolean*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jbooleanArray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "GetByteArrayElements",
+        "Prototype": "jbyte*      (*GetByteArrayElements)(JNIEnv*, jbyteArray, jboolean*);",
+        "ReturnType": {
+            "Name": "jbyte*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jbyteArray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "GetCharArrayElements",
+        "Prototype": "jchar*      (*GetCharArrayElements)(JNIEnv*, jcharArray, jboolean*);",
+        "ReturnType": {
+            "Name": "jchar*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jcharArray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "GetShortArrayElements",
+        "Prototype": "jshort*     (*GetShortArrayElements)(JNIEnv*, jshortArray, jboolean*);",
+        "ReturnType": {
+            "Name": "jshort*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jshortArray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "GetIntArrayElements",
+        "Prototype": "jint*       (*GetIntArrayElements)(JNIEnv*, jintArray, jboolean*);",
+        "ReturnType": {
+            "Name": "jint*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jintArray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "GetLongArrayElements",
+        "Prototype": "jlong*      (*GetLongArrayElements)(JNIEnv*, jlongArray, jboolean*);",
+        "ReturnType": {
+            "Name": "jlong*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jlongArray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "GetFloatArrayElements",
+        "Prototype": "jfloat*     (*GetFloatArrayElements)(JNIEnv*, jfloatArray, jboolean*);",
+        "ReturnType": {
+            "Name": "jfloat*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jfloatArray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "GetDoubleArrayElements",
+        "Prototype": "jdouble*    (*GetDoubleArrayElements)(JNIEnv*, jdoubleArray, jboolean*);",
+        "ReturnType": {
+            "Name": "jdouble*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jdoubleArray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseBooleanArrayElements",
+        "Prototype": "void        (*ReleaseBooleanArrayElements)(JNIEnv*, jbooleanArray, jboolean*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jbooleanArray"
+                }
+            },
+            {
+                "Name": "elements",
+                "Type": {
+                    "Name": "jboolean*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseByteArrayElements",
+        "Prototype": "void        (*ReleaseByteArrayElements)(JNIEnv*, jbyteArray, jbyte*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jbyteArray"
+                }
+            },
+            {
+                "Name": "elements",
+                "Type": {
+                    "Name": "jbyte*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseCharArrayElements",
+        "Prototype": "void        (*ReleaseCharArrayElements)(JNIEnv*, jcharArray, jchar*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jcharArray"
+                }
+            },
+            {
+                "Name": "elements",
+                "Type": {
+                    "Name": "jchar*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseShortArrayElements",
+        "Prototype": "void        (*ReleaseShortArrayElements)(JNIEnv*, jshortArray, jshort*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jshortArray"
+                }
+            },
+            {
+                "Name": "elements",
+                "Type": {
+                    "Name": "jshort*"
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseIntArrayElements",
+        "Prototype": "void        (*ReleaseIntArrayElements)(JNIEnv*, jintArray, jint*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jintArray"
+                }
+            },
+            {
+                "Name": "elements",
+                "Type": {
+                    "Name": "jint*"
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseLongArrayElements",
+        "Prototype": "void        (*ReleaseLongArrayElements)(JNIEnv*, jlongArray, jlong*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jlongArray"
+                }
+            },
+            {
+                "Name": "elements",
+                "Type": {
+                    "Name": "jlong*"
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseFloatArrayElements",
+        "Prototype": "void        (*ReleaseFloatArrayElements)(JNIEnv*, jfloatArray, jfloat*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jfloatArray"
+                }
+            },
+            {
+                "Name": "elements",
+                "Type": {
+                    "Name": "jfloat*"
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseDoubleArrayElements",
+        "Prototype": "void        (*ReleaseDoubleArrayElements)(JNIEnv*, jdoubleArray, jdouble*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jdoubleArray"
+                }
+            },
+            {
+                "Name": "elements",
+                "Type": {
+                    "Name": "jdouble*"
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetBooleanArrayRegion",
+        "Prototype": "void        (*GetBooleanArrayRegion)(JNIEnv*, jbooleanArray, jsize, jsize, jboolean*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jbooleanArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jboolean*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "GetByteArrayRegion",
+        "Prototype": "void        (*GetByteArrayRegion)(JNIEnv*, jbyteArray, jsize, jsize, jbyte*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jbyteArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jbyte*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "GetCharArrayRegion",
+        "Prototype": "void        (*GetCharArrayRegion)(JNIEnv*, jcharArray, jsize, jsize, jchar*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jcharArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jchar*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "GetShortArrayRegion",
+        "Prototype": "void        (*GetShortArrayRegion)(JNIEnv*, jshortArray, jsize, jsize, jshort*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jshortArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jshort*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "GetIntArrayRegion",
+        "Prototype": "void        (*GetIntArrayRegion)(JNIEnv*, jintArray, jsize, jsize, jint*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jintArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jint*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "GetLongArrayRegion",
+        "Prototype": "void        (*GetLongArrayRegion)(JNIEnv*, jlongArray, jsize, jsize, jlong*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jlongArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jlong*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "GetFloatArrayRegion",
+        "Prototype": "void        (*GetFloatArrayRegion)(JNIEnv*, jfloatArray, jsize, jsize, jfloat*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jlongArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jfloat*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "GetDoubleArrayRegion",
+        "Prototype": "void        (*GetDoubleArrayRegion)(JNIEnv*, jdoubleArray, jsize, jsize, jdouble*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jdoubleArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jdouble*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "SetBooleanArrayRegion",
+        "Prototype": "void        (*SetBooleanArrayRegion)(JNIEnv*, jbooleanArray, jsize, jsize, const jboolean*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jbooleanArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jboolean*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetByteArrayRegion",
+        "Prototype": "void        (*SetByteArrayRegion)(JNIEnv*, jbyteArray, jsize, jsize, const jbyte*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jbyteArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jbyte*"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetCharArrayRegion",
+        "Prototype": "void        (*SetCharArrayRegion)(JNIEnv*, jcharArray, jsize, jsize, const jchar*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jcharArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "const jchar*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetShortArrayRegion",
+        "Prototype": "void        (*SetShortArrayRegion)(JNIEnv*, jshortArray, jsize, jsize, const jshort*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jshortArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jshort*"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetIntArrayRegion",
+        "Prototype": "void        (*SetIntArrayRegion)(JNIEnv*, jintArray, jsize, jsize, const jint*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jintArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jint*"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetLongArrayRegion",
+        "Prototype": "void        (*SetLongArrayRegion)(JNIEnv*, jlongArray, jsize, jsize, const jlong*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jlongArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jlong*"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetFloatArrayRegion",
+        "Prototype": "void        (*SetFloatArrayRegion)(JNIEnv*, jfloatArray, jsize, jsize, const jfloat*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jfloatArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jfloat*"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "SetDoubleArrayRegion",
+        "Prototype": "void        (*SetDoubleArrayRegion)(JNIEnv*, jdoubleArray, jsize, jsize, const jdouble*);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jdoubleArray"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jdouble*"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "RegisterNatives",
+        "Prototype": "jint        (*RegisterNatives)(JNIEnv*, jclass, const JNINativeMethod*, jint);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            },
+            {
+                "Name": "methods",
+                "Type": {
+                    "Name": "const JNINativeMethod*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "numMethods",
+                "Type": {
+                    "Name": "jint"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "UnregisterNatives",
+        "Prototype": "jint        (*UnregisterNatives)(JNIEnv*, jclass);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "type",
+                "Type": {
+                    "Name": "jclass"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "MonitorEnter",
+        "Prototype": "jint        (*MonitorEnter)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "MonitorExit",
+        "Prototype": "jint        (*MonitorExit)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetJavaVM",
+        "Prototype": "jint        (*GetJavaVM)(JNIEnv*, JavaVM**);",
+        "ReturnType": {
+            "Name": "jint"
+        },
+        "Parameters": [
+            {
+                "Name": "vm",
+                "Type": {
+                    "Name": "JavaVM**",
+                    "MarshalType": "JniInvokeInterface*",
+                    "ManagedType": "JniInvokeInterface*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "GetStringRegion",
+        "Prototype": "void        (*GetStringRegion)(JNIEnv*, jstring, jsize, jsize, jchar*);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jchar*",
+                    "IsSpan": true
+                },
+                "Direction": "Ref"
+            }
+        ]
+    },
+    {
+        "Name": "GetStringUTFRegion",
+        "Prototype": "void        (*GetStringUTFRegion)(JNIEnv*, jstring, jsize, jsize, char*);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            },
+            {
+                "Name": "start",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "length",
+                "Type": {
+                    "Name": "jsize"
+                }
+            },
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "char*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetPrimitiveArrayCritical",
+        "Prototype": "void*       (*GetPrimitiveArrayCritical)(JNIEnv*, jarray, jboolean*);",
+        "ReturnType": {
+            "Name": "void*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jarray"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "ReleasePrimitiveArrayCritical",
+        "Prototype": "void        (*ReleasePrimitiveArrayCritical)(JNIEnv*, jarray, void*, jint);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "array",
+                "Type": {
+                    "Name": "jarray"
+                }
+            },
+            {
+                "Name": "carray",
+                "Type": {
+                    "Name": "void*",
+                    "IsSpan": true
+                }
+            },
+            {
+                "Name": "mode",
+                "Type": {
+                    "Name": "jint",
+                    "MarshalType": "int",
+                    "ManagedType": "JniReleaseArrayElementsMode"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetStringCritical",
+        "Prototype": "const jchar* (*GetStringCritical)(JNIEnv*, jstring, jboolean*);",
+        "ReturnType": {
+            "Name": "const jchar*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            },
+            {
+                "Name": "isCopy",
+                "Type": {
+                    "Name": "jboolean*"
+                },
+                "Direction": "Out"
+            }
+        ]
+    },
+    {
+        "Name": "ReleaseStringCritical",
+        "Prototype": "void        (*ReleaseStringCritical)(JNIEnv*, jstring, const jchar*);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "stringInstance",
+                "Type": {
+                    "Name": "jstring"
+                }
+            },
+            {
+                "Name": "carray",
+                "Type": {
+                    "Name": "const jchar*",
+                    "IsSpan": true
+                }
+            }
+        ]
+    },
+    {
+        "Name": "NewWeakGlobalRef",
+        "Prototype": "jweak       (*NewWeakGlobalRef)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jweak"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "DeleteWeakGlobalRef",
+        "Prototype": "void        (*DeleteWeakGlobalRef)(JNIEnv*, jweak);",
+        "ReturnType": {
+            "Name": "void"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jweak"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "ExceptionCheck",
+        "Prototype": "jboolean    (*ExceptionCheck)(JNIEnv*);",
+        "ReturnType": {
+            "Name": "jboolean"
+        },
+        "Parameters": []
+    },
+    {
+        "Name": "NewDirectByteBuffer",
+        "Prototype": "jobject     (*NewDirectByteBuffer)(JNIEnv*, void*, jlong);",
+        "Throws": true,
+        "ReturnType": {
+            "Name": "jobject"
+        },
+        "Parameters": [
+            {
+                "Name": "address",
+                "Type": {
+                    "Name": "void*"
+                }
+            },
+            {
+                "Name": "capacity",
+                "Type": {
+                    "Name": "jlong"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetDirectBufferAddress",
+        "Prototype": "void*       (*GetDirectBufferAddress)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "void*",
+            "IsSpan": true
+        },
+        "Parameters": [
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetDirectBufferCapacity",
+        "Prototype": "jlong       (*GetDirectBufferCapacity)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jlong"
+        },
+        "Parameters": [
+            {
+                "Name": "buffer",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    },
+    {
+        "Name": "GetObjectRefType",
+        "Prototype": "jobjectRefType (*GetObjectRefType)(JNIEnv*, jobject);",
+        "ReturnType": {
+            "Name": "jobjectRefType"
+        },
+        "Parameters": [
+            {
+                "Name": "instance",
+                "Type": {
+                    "Name": "jobject"
+                }
+            }
+        ]
+    }
+]

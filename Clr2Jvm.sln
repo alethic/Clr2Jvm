@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31424.327
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Clr2Jvm", "Clr2Jvm\Clr2Jvm.csproj", "{255356CF-6122-4B1E-A466-A84D73BC1F52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Clr2Jvm.Tests", "Clr2Jvm.Tests\Clr2Jvm.Tests.csproj", "{1D06502E-B4E7-4625-B577-0424479529E7}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{255356CF-6122-4B1E-A466-A84D73BC1F52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{255356CF-6122-4B1E-A466-A84D73BC1F52}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{255356CF-6122-4B1E-A466-A84D73BC1F52}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{255356CF-6122-4B1E-A466-A84D73BC1F52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D06502E-B4E7-4625-B577-0424479529E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D06502E-B4E7-4625-B577-0424479529E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D06502E-B4E7-4625-B577-0424479529E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D06502E-B4E7-4625-B577-0424479529E7}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BCB5D040-A200-443A-B696-1E1AD5C74F33}
+	EndGlobalSection
+EndGlobal

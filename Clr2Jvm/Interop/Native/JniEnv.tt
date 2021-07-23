@@ -1,0 +1,614 @@
+﻿<#@ template language="C#" hostspecific="true" #>
+<#@ output extension=".g.cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(NuGetPackageRoot)\newtonsoft.json\13.0.1\lib\net45\Newtonsoft.Json.dll" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="Newtonsoft.Json" #>
+<#@ import namespace="Newtonsoft.Json.Linq" #>
+#nullable enable
+#pragma warning disable IDE0047
+#pragma warning disable IDE1006
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace Clr2Jvm.Interop.Native
+{
+
+    /// <summary>
+    /// Represents the JniNativeInterface structure from 'jni.h'.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    readonly partial struct JniNativeInterface
+    {
+
+<#
+var jniList = JArray.Parse(File.ReadAllText(Host.ResolvePath(@"JniEnv.json"))).Select(i => JniNativeFunction.FromJson((JObject)i));
+int maxName = jniList.Max(e => e.Name.Length);
+
+for (int i = 0; i < 4; i++)
+{
+#>
+        readonly IntPtr reserved<#= i #>;                            // void*
+<#
+}
+
+foreach (var e in jniList)
+{
+#>
+        public readonly IntPtr <#= e.Name #>;<#= new string (' ', maxName - e.Name.Length) #> // <#= e.Prototype #>
+<#
+}
+#>
+
+    }
+    
+    /// <summary>
+    /// Provides managed methods around a JniNativeInterface.
+    /// </summary>
+    unsafe partial class JniEnv
+    {
+
+<#
+foreach (var e in jniList)
+{
+    var n = e.GetDelegateTypeName();
+    if (n == null)
+        continue;
+
+    var d = CreateDelegateTypeDefinition(e);
+    if (d == null)
+        continue;
+
+    var m = CreateMethodDefinition(e);
+    if (m == null)
+        continue;
+#>
+        <#= d #>;
+        <#= n #>? __<#= e.Name #>;
+        <#= n #> _<#= e.Name #> => __<#= e.Name #> ??= GetDelegateForFunctionPointer<<#= n #>>((*env)-><#= e.Name #>);
+
+        <#= m #>
+<#
+}
+#>
+    }
+
+}
+
+<#+
+
+class JniNativeFunction
+{
+
+    public static JniNativeFunction FromJson(JObject i)
+    {
+        return new JniNativeFunction()
+        {
+            Name          = (string)i["Name"],
+            Prototype     = (string)i["Prototype"],
+            Throws        = (bool?)i["Throws"] ?? false,
+            ReturnType    = TypeInfo.FromJson((JObject)i["ReturnType"]),
+            Parameters    = ((JArray)i["Parameters"])?.Select(j => ParamInfo.FromJson((JObject)j)).ToArray() ?? new ParamInfo[0],
+        };
+    }
+
+    public string Name { get; internal set; }
+
+    public string Prototype { get; internal set; }
+
+    public bool Throws { get; set; }
+
+    public TypeInfo ReturnType { get; internal set; }
+
+    public ParamInfo[] Parameters { get; internal set; }
+
+    public string GetManagedReturnType()
+    {
+        if (ReturnType == null)
+            return "void";
+
+        return ReturnType.GetManagedType(Direction.Return);
+    }
+
+    public string GetMarshalReturnType()
+    {
+        if (ReturnType == null)
+            return "void";
+
+        return ReturnType.GetMarshalType(Direction.Return);
+    }
+
+    public string GetDelegateTypeName()
+    {
+        return Name + "Delegate";
+    }
+
+}
+
+abstract class TypeInfo
+{
+
+    public static TypeInfo FromJson(JObject o)
+    {
+        if (o == null)
+            return null;
+        if ((string)o["Name"] == "void")
+            return null;
+
+        var isNullable = (bool?)o["IsNullable"] ?? false;
+        var isSpan = (bool?)o["IsSpan"] ?? false;
+        var marshalType = (string)o["MarshalType"] ?? null;
+        var managedType = (string)o["ManagedType"] ?? null;
+
+        return (string)o["Name"] switch
+        {
+            "va_list" =>                    null,
+            "void*" =>                      new PointerTypeInfo("void*", marshalType ?? "void", managedType ?? "JVoid", isNullable, isSpan),
+            "char*" =>                      new PointerTypeInfo("char*", marshalType ?? "byte", managedType ?? "Char", isNullable, isSpan),
+            "const char*" =>                new PointerTypeInfo("const char*", marshalType ?? "byte", managedType ?? "Char", isNullable, isSpan),
+            "jvalue" =>                     new BuiltinTypeInfo("jvalue", marshalType ?? "JValue", managedType ?? "JValue"),
+            "jvalue*" =>                    new BuiltinTypeInfo("jvalue*", marshalType ?? "JValue*", managedType ?? "JValue"),
+            "jsize" =>                      new BuiltinTypeInfo("jsize", marshalType ?? "int", managedType ?? "JSize"),
+            "jsize*" =>                     new PointerTypeInfo("jsize*", marshalType ?? "int", managedType ?? "JSize", isNullable, isSpan),
+            "jboolean" =>                   new BuiltinTypeInfo("jboolean", marshalType ?? "byte", managedType ?? "JBoolean"),
+            "jboolean*" =>                  new PointerTypeInfo("jboolean*", marshalType ?? "byte", managedType ?? "JBoolean", isNullable, isSpan),
+            "jbyte" =>                      new BuiltinTypeInfo("jbyte", marshalType ?? "sbyte", managedType ?? "JByte"),
+            "jbyte*" =>                     new PointerTypeInfo("jbyte*", marshalType ?? "sbyte", managedType ?? "JByte", isNullable, isSpan),
+            "const jbyte*" =>               new PointerTypeInfo("const jbyte*", marshalType ?? "sbyte", managedType ?? "JByte", isNullable, isSpan),
+            "jchar" =>                      new BuiltinTypeInfo("jchar", marshalType ?? "char", managedType ?? "JChar"),
+            "jchar*" =>                     new PointerTypeInfo("jchar*", marshalType ?? "char", managedType ?? "JChar", isNullable, isSpan),
+            "const jchar*" =>               new PointerTypeInfo("const jchar*", marshalType ?? "char", managedType ?? "JChar", isNullable, isSpan),
+            "jshort" =>                     new BuiltinTypeInfo("jshort", marshalType ?? "short", managedType ?? "JShort"),
+            "jshort*" =>                    new PointerTypeInfo("jshort*", marshalType ?? "short", managedType ?? "JShort", isNullable, isSpan),
+            "jint" =>                       new BuiltinTypeInfo("jint", marshalType ?? "int", managedType ?? "JInt"),
+            "jint*" =>                      new PointerTypeInfo("jint*", marshalType ?? "int", managedType ?? "JInt", isNullable, isSpan),
+            "jlong" =>                      new BuiltinTypeInfo("jlong", marshalType ?? "long", managedType ?? "JLong"),
+            "jlong*" =>                     new PointerTypeInfo("jlong*", marshalType ?? "long", managedType ?? "JLong", isNullable, isSpan),
+            "jfloat" =>                     new BuiltinTypeInfo("jfloat", marshalType ?? "float", managedType ?? "JFloat"),
+            "jfloat*" =>                    new PointerTypeInfo("jfloat*", marshalType ?? "float", managedType ?? "JFloat", isNullable, isSpan),
+            "jdouble" =>                    new BuiltinTypeInfo("jdouble", marshalType ?? "double", managedType ?? "JDouble"),
+            "jdouble*" =>                   new PointerTypeInfo("jdouble*", marshalType ?? "double", managedType ?? "JDouble", isNullable, isSpan),
+            "jbooleanArray" =>              new HandleTypeInfo("jbooleanArray", marshalType ?? "IntPtr", managedType ?? "JBooleanArray"),
+            "jbyteArray" =>                 new HandleTypeInfo("jbyteArray", marshalType ?? "IntPtr", managedType ?? "JByteArray"),
+            "jcharArray" =>                 new HandleTypeInfo("jcharArray", marshalType ?? "IntPtr", managedType ?? "JCharArray"),
+            "jshortArray" =>                new HandleTypeInfo("jshortArray", marshalType ?? "IntPtr", managedType ?? "JShortArray"),
+            "jintArray" =>                  new HandleTypeInfo("jintArray", marshalType ?? "IntPtr", managedType ?? "JIntArray"),
+            "jlongArray" =>                 new HandleTypeInfo("jlongArray", marshalType ?? "IntPtr", managedType ?? "JLongArray"),
+            "jfloatArray" =>                new HandleTypeInfo("jfloatArray", marshalType ?? "IntPtr", managedType ?? "JFloatArray"),
+            "jdoubleArray" =>               new HandleTypeInfo("jdoubleArray", marshalType ?? "IntPtr", managedType ?? "JDoubleArray"),
+            "jobjectArray" =>               new HandleTypeInfo("jobjectArray", marshalType ?? "IntPtr", managedType ?? "JObjectArray"),
+            "const JNINativeMethod*" =>     new PointerTypeInfo("const JNINativeMethod*", marshalType ?? "JniNativeMethod", managedType ?? "JniNativeMethod"),
+            "jobjectRefType" =>             new BuiltinTypeInfo("jobjectRefType", marshalType ?? "JniObjectReferenceType", managedType ?? "JniObjectReferenceType"),
+            "jfieldID" =>                   new FieldTypeInfo("jfieldID"),
+            "jmethodID" =>                  new MethodTypeInfo("jmethodID"),
+            "jobject" =>                    new HandleTypeInfo("jobject", marshalType ?? "IntPtr", managedType ?? "JObject"),
+            "jclass" =>                     new HandleTypeInfo("jclass", marshalType ?? "IntPtr", managedType ?? "JClass"),
+            "jstring" =>                    new HandleTypeInfo("jstring", marshalType ?? "IntPtr", managedType ?? "JString"),
+            "jarray" =>                     new HandleTypeInfo("jarray", marshalType ?? "IntPtr", managedType ?? "JArray"),
+            "jthrowable" =>                 new HandleTypeInfo("jthrowable", marshalType ?? "IntPtr", managedType ?? "JThrowable"),
+            "jweak" =>                      new HandleTypeInfo("jweak", marshalType ?? "IntPtr", managedType ?? "JWeak"),
+            "JavaVM**" =>                   new PointerTypeInfo("JavaVM**", marshalType ?? "JniInvokeInterface*", managedType ?? "JniInvokeInterface*", isNullable, isSpan),
+            _ =>                            throw new Exception($"Unknown type: '{(string)o["Name"]}'."),
+        };
+    }
+
+    protected TypeInfo(string name, bool isNullable, bool isSpan)
+    {
+        Name = name;
+        IsNullable = isNullable;
+        IsSpan = isSpan;
+    }
+
+    public string Name { get; }
+
+    public bool IsNullable { get; }
+
+    public bool IsSpan { get; }
+
+    public abstract string GetMarshalType(Direction direction);
+
+    public virtual string GetMarshalParamExpression(string name, Direction direction)
+    {
+        return $"{GetMarshalType(direction)} {name}";
+    }
+
+    public abstract string GetManagedType(Direction direction);
+
+    public virtual string GetManagedParamExpression(string name, Direction direction)
+    {
+        return $"{GetManagedType(direction)} {name}";
+    }
+
+    public virtual string GetManagedToMarshalExpression(string variable, Direction direction)
+    {
+        return variable;
+    }
+
+    public virtual IEnumerable<string> GetBeforeStatements(string variable, Direction direction)
+    {
+        yield break;
+    }
+
+    public virtual IEnumerable<string> GetAfterStatements(string variable, Direction direction)
+    {
+        yield break;
+    }
+
+    public virtual string GetMarshalToManagedExpression(string variable,  Direction direction)
+    {
+        return variable;
+    }
+
+}
+
+class BuiltinTypeInfo : TypeInfo
+{
+
+    readonly string marshal;
+    readonly string managed;
+
+    public BuiltinTypeInfo(string jni, string marshal, string managed, bool isNullable = false, bool isSpan = false) :
+        base(jni, isNullable, isSpan)
+    {
+        this.marshal = marshal;
+        this.managed = managed;
+    }
+
+    public override string GetMarshalType(Direction direction)
+    {
+        return marshal;
+    }
+
+    public override string GetManagedType(Direction direction)
+    {
+        return managed;
+    }
+
+    public override string GetManagedToMarshalExpression(string variable, Direction direction)
+    {
+        return $"({marshal}){variable}";
+    }
+
+    public override string GetMarshalToManagedExpression(string variable,  Direction direction)
+    {
+        return $"({managed}){variable}";
+    }
+
+}
+
+class PointerTypeInfo : TypeInfo
+{
+
+    readonly string marshal;
+    readonly string managed;
+
+    public PointerTypeInfo(string name, string marshal, string managed, bool isNullable = false, bool isSpan = false) :
+        base(name, isNullable, isSpan)
+    {
+        this.marshal = marshal;
+        this.managed = managed;
+    }
+
+    public override string GetMarshalType(Direction direction)
+    {
+        if (direction == Direction.In && IsSpan == false)
+            return $"{marshal}*";
+        if (direction == Direction.In && IsSpan)
+            return $"{marshal}*";
+        if (direction == Direction.Return && IsSpan == false)
+            return $"{marshal}*";
+        if (direction == Direction.Return && IsSpan)
+            return $"{marshal}*";
+
+        return marshal;
+    }
+
+    public override string GetManagedType(Direction direction)
+    {
+        if (direction == Direction.In && IsSpan == false)
+            return $"{managed}Pointer";
+        if (direction == Direction.In && IsSpan)
+            return $"{managed}Pointer";
+        if (direction == Direction.Return && IsSpan)
+            return $"{managed}Pointer";
+        if (direction == Direction.Return && IsSpan == false)
+            return $"{managed}Pointer";
+
+        return managed;
+    }
+
+    public override string GetMarshalParamExpression(string name, Direction direction)
+    {
+        if (direction == Direction.In && IsSpan == false)
+            return $"{marshal}* {name}";
+        if (direction == Direction.In && IsSpan)
+            return $"{marshal}* {name}";
+        if (direction == Direction.Out && IsSpan == false)
+            return $"out {marshal} {name}";
+        if (direction == Direction.Ref && IsSpan)
+            return $"{marshal}* {name}";
+
+        throw new NotImplementedException($"Name: {name}, Direction: {direction}");
+    }
+
+    public override string GetMarshalToManagedExpression(string variable, Direction direction)
+    {
+        return $"{variable}";
+    }
+
+    public override string GetManagedParamExpression(string name, Direction direction)
+    {
+        if (direction == Direction.In && IsSpan == false)
+            return $"{managed}Pointer {name}";
+        if (direction == Direction.In && IsSpan)
+            return $"{managed}Pointer {name}";
+        if (direction == Direction.Out && IsSpan == false)
+            return $"out {managed} {name}";
+        if (direction == Direction.Ref && IsSpan)
+            return $"{managed}Span {name}";
+
+        throw new NotImplementedException($"Name: {name}, Direction: {direction}");
+    }
+
+    public override IEnumerable<string> GetBeforeStatements(string variable, Direction direction)
+    {
+        if (direction == Direction.Ref && IsSpan)
+        {
+            yield return $"fixed ({marshal}* _{variable}_ptr = {variable}.Span)";
+            yield return "{";
+            yield break;
+        }
+    }
+
+    public override string GetManagedToMarshalExpression(string variable, Direction direction)
+    {
+        if (direction == Direction.In && IsSpan == false)
+            return variable;
+        if (direction == Direction.In && IsSpan)
+            return $"{variable}";
+        if (direction == Direction.Out && IsSpan == false)
+            return $"out var _{variable}";
+        if (direction == Direction.Ref && IsSpan)
+            return $"_{variable}_ptr";
+
+        throw new NotImplementedException($"Variable: {variable}, Direction: {direction}");
+    }
+
+    public override IEnumerable<string> GetAfterStatements(string variable, Direction direction)
+    {
+        if (direction == Direction.Out && IsSpan == false)
+        {
+            yield return $"{variable} = _{variable};";
+            yield break;
+        }
+            
+        if (direction == Direction.Ref && IsSpan)
+        {
+            yield return "}";
+            yield break;
+        }
+    }
+
+}
+
+class IdTypeInfo : TypeInfo
+{
+
+    readonly string managedType;
+
+    public IdTypeInfo(string name, string managedType, bool isNullable = false, bool isSpan = false) :
+        base(name, isNullable, isSpan)
+    {
+        this.managedType = managedType;
+    }
+
+    public override string GetMarshalType(Direction direction)
+    {
+        return "IntPtr";
+    }
+
+    public override string GetManagedType(Direction direction)
+    {
+        return managedType;
+    }
+
+    public override string GetManagedToMarshalExpression(string variable, Direction direction)
+    {
+        return variable;
+    }
+
+    public override string GetMarshalToManagedExpression(string variable, Direction direction)
+    {
+        return variable;
+    }
+
+}
+
+class FieldTypeInfo : IdTypeInfo
+{
+
+    public FieldTypeInfo(string name, bool isNullable = false) :
+        base(name, "JFieldID", isNullable, false)
+    {
+
+    }
+
+}
+
+class MethodTypeInfo : IdTypeInfo
+{
+
+    public MethodTypeInfo(string name, bool isNullable = false) :
+        base(name, "JMethodID", isNullable, false)
+    {
+
+    }
+
+}
+
+class HandleTypeInfo : TypeInfo
+{
+
+    readonly string marshalType;
+    readonly string managedType;
+    
+    public HandleTypeInfo(string name, string marshalType, string managedType, bool isNullable = false, bool isSpan = false) :
+        base(name, isNullable, isSpan)
+    {
+        this.marshalType = marshalType;
+        this.managedType = managedType;
+    }
+
+    public override string GetMarshalType(Direction direction)
+    {
+        return marshalType;
+    }
+
+    public override string GetManagedType(Direction direction)
+    {
+        return managedType;
+    }
+
+}
+
+enum Direction
+{
+
+    In = 0,
+    Out = 1,
+    Ref = 2,
+    Return = 3,
+
+}
+
+class ParamInfo
+{
+
+    public static ParamInfo FromJson(JObject j)
+    {
+        return new ParamInfo(
+            (string)j["Name"],
+            TypeInfo.FromJson((JObject)j["Type"]),
+            (bool?)j["IsParamArray"] ?? false,
+            (Direction)Enum.Parse(typeof(Direction), (string)j["Direction"] ?? "In"));
+    }
+
+    public ParamInfo(string name, TypeInfo type, bool isParamArray = false, Direction direction = Direction.In)
+    {
+        Name = name;
+        Type = type;
+        IsParamArray = isParamArray;
+        Direction = direction;
+    }
+
+    public TypeInfo Type { get; }
+
+    public string Name { get; }
+
+    public bool IsParamArray { get; }
+
+    public Direction Direction { get; }
+
+}
+
+static string Escape (string value)
+{
+    switch (value)
+    {
+        case "object":
+        case "string":
+        case "ref":
+            return "@" + value;
+        default:
+            return value;
+    }
+}
+
+static string CreateDelegateTypeDefinition(JniNativeFunction entry)
+{
+    if (entry.Parameters.Any(i => i.IsParamArray || i.Type == null || i.Type.Name == "va_list"))
+        return null;
+
+    var builder = new StringBuilder();
+
+    var name = entry.GetDelegateTypeName();
+    if (name == null)
+        return null;
+
+    builder.Append($"delegate {entry.GetMarshalReturnType()} {Escape(name)}(JniNativeInterface** env");
+    for (int i = 0; i < entry.Parameters.Length; i++)
+    {
+        builder.Append(", ");
+        builder.Append(entry.Parameters[i].Type.GetMarshalParamExpression(Escape(entry.Parameters[i].Name), entry.Parameters[i].Direction));
+    }
+
+    builder.Append(")");
+
+    return builder.ToString();
+}
+
+static string CreateMethodDefinition(JniNativeFunction entry)
+{
+    if (entry.Parameters.Any(i => i.IsParamArray || i.Type == null || i.Type.Name == "va_list"))
+        return null;
+
+    var builder = new StringBuilder();
+        
+    var beforeStmts = entry.Parameters.SelectMany(i => i.Type.GetBeforeStatements(Escape(i.Name), i.Direction)).ToList();
+    if (entry.ReturnType != null)
+        foreach (var s in entry.ReturnType.GetBeforeStatements(null, Direction.Return))
+            beforeStmts.Append(s);
+
+    var afterStmts = entry.Parameters.SelectMany(i => i.Type.GetAfterStatements(Escape(i.Name), i.Direction)).ToList();
+    if (entry.ReturnType != null)
+        foreach (var s in entry.ReturnType.GetAfterStatements(null, Direction.Return))
+            afterStmts.Append(s);
+
+    builder.Append($"public {entry.GetManagedReturnType()} {entry.Name}(");
+
+    for (int i = 0; i < entry.Parameters.Length; i++)
+    {
+        if (i > 0)
+            builder.Append(", ");
+
+        builder.Append(entry.Parameters[i].Type.GetManagedParamExpression(Escape(entry.Parameters[i].Name), entry.Parameters[i].Direction));
+    }
+
+    builder.AppendLine(")");
+    builder.AppendLine("{");
+
+    if (entry.ReturnType != null)
+        builder.AppendLine($"{entry.ReturnType.GetManagedType(Direction.Return)} @return;");
+
+    foreach (var s in beforeStmts)
+        builder.AppendLine(s);
+
+    if (entry.ReturnType != null)
+        builder.Append("@return = ");
+
+    var expression = new StringBuilder();
+    expression.Append($"_{entry.Name}");
+    expression.Append("(");
+    expression.Append("env");
+    for (int i = 0; i < entry.Parameters.Length; i++)
+        expression.Append(", ").Append(entry.Parameters[i].Type.GetManagedToMarshalExpression(entry.Parameters[i].Name, entry.Parameters[i].Direction));
+    expression.Append(")");
+
+    builder.Append(expression.ToString()).AppendLine(";");
+    
+    foreach (var s in afterStmts)
+        builder.AppendLine(s);
+
+    if (entry.ReturnType != null)
+        builder.AppendLine($"return {entry.ReturnType.GetMarshalToManagedExpression("@return", Direction.Return)};");
+
+    builder.AppendLine("}");
+
+    return builder.ToString();
+}
+
+#>
