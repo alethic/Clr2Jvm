@@ -16,14 +16,9 @@ namespace Clr2Jvm.Interop.Proxies
         /// </summary>
         /// <param name="runtime"></param>
         public LongMarshalBuilder(JavaRuntime runtime) :
-            base(runtime)
+            base(runtime, JavaDescriptorType.Long)
         {
 
-        }
-
-        public override bool CanMarshalType(JavaDescriptorType type)
-        {
-            return type == JavaDescriptorType.Long;
         }
 
     }

@@ -1,6 +1,6 @@
-﻿using Clr2Jvm.Interop.Native;
+﻿using System;
 
-using System;
+using Clr2Jvm.Interop.Native;
 
 namespace Clr2Jvm.Interop
 {
@@ -16,12 +16,17 @@ namespace Clr2Jvm.Interop
         /// <returns></returns>
         static string GetMessage(JavaRuntime runtime, JThrowable throwable)
         {
-            var jstring = (JString)runtime.Environment.CallObjectMethod(throwable, "getMessage", "()Ljava/lang/String;");
-            if (jstring.IsNull)
-                return null;
+            var str = JString.Null;
 
-            var message = runtime.Environment.GetString(jstring);
-            return message;
+            try
+            {
+                str = (JString)runtime.Environment.CallObjectMethod(throwable, "java/lang/Throwable", "getMessage", "()Ljava/lang/String;");
+                return !str.IsNull ? runtime.Environment.GetString(str) : null;
+            }
+            finally
+            {
+                runtime.Environment.SafeDeleteLocalRef(str);
+            }
         }
 
         JavaRuntime runtime;

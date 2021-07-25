@@ -16,14 +16,9 @@ namespace Clr2Jvm.Interop.Proxies
         /// </summary>
         /// <param name="runtime"></param>
         public ByteMarshalBuilder(JavaRuntime runtime) :
-            base(runtime)
+            base(runtime, JavaDescriptorType.Byte)
         {
 
-        }
-
-        public override bool CanMarshalType(JavaDescriptorType type)
-        {
-            return type == JavaDescriptorType.Byte;
         }
 
     }

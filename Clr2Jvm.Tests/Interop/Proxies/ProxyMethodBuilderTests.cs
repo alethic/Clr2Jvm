@@ -19,13 +19,75 @@ namespace Clr2Jvm.Tests.Interop.Proxies
         }
 
         [TestMethod]
-        public void Can_call_void_static_method_with_int_arg()
+        public void Can_call_int_static_method_with_int_arg()
         {
             var jre = JavaInstall.Default.Runtime;
             jre.Should().NotBeNull();
-            var bld = new ProxyMethodBuilder(jre);
-            var del = (Action<int>)bld.BuildCallStaticMethodDelegate(IntPtr.Zero, IntPtr.Zero, "(I)V");
-            // TODO
+
+            var clazz = jre.Environment.FindClass("java/lang/Integer");
+            var method = jre.Environment.GetStaticMethodID(clazz, "bitCount", "(I)I");
+            var builder = new ProxyMethodBuilder(jre);
+            var bitCount = (Func<int, int>)builder.BuildCallStaticMethodDelegate(clazz, method, "(I)I");
+            bitCount(1).Should().Be(1);
+            bitCount(2).Should().Be(1);
+            bitCount(3).Should().Be(2);
+        }
+
+        [TestMethod]
+        public void Can_call_int_static_method_with_two_int_args()
+        {
+            var jre = JavaInstall.Default.Runtime;
+            jre.Should().NotBeNull();
+
+            var clazz = jre.Environment.FindClass("java/lang/Integer");
+            var method = jre.Environment.GetStaticMethodID(clazz, "compare", "(II)I");
+            var builder = new ProxyMethodBuilder(jre);
+            var compare = (Func<int, int, int>)builder.BuildCallStaticMethodDelegate(clazz, method, "(II)I");
+            compare(1, 1).Should().Be(0);
+            compare(0, 1).Should().Be(-1);
+            compare(1, 0).Should().Be(1);
+        }
+
+        [TestMethod]
+        public void Can_call_int_static_method_with_string_arg()
+        {
+            var jre = JavaInstall.Default.Runtime;
+            jre.Should().NotBeNull();
+
+            var clazz = jre.Environment.FindClass("java/lang/Integer");
+            var method = jre.Environment.GetStaticMethodID(clazz, "parseInt", "(Ljava/lang/String;)I");
+            var builder = new ProxyMethodBuilder(jre);
+            var parseInt = (Func<string, int>)builder.BuildCallStaticMethodDelegate(clazz, method, "(Ljava/lang/String;)I");
+            parseInt("1").Should().Be(1);
+            parseInt("666").Should().Be(666);
+        }
+
+        [TestMethod]
+        public void Can_call_string_static_method_with_int_arg()
+        {
+            var jre = JavaInstall.Default.Runtime;
+            jre.Should().NotBeNull();
+
+            var clazz = jre.Environment.FindClass("java/lang/Integer");
+            var method = jre.Environment.GetStaticMethodID(clazz, "toString", "(I)Ljava/lang/String;");
+            var builder = new ProxyMethodBuilder(jre);
+            var toString = (Func<int, string>)builder.BuildCallStaticMethodDelegate(clazz, method, "(I)Ljava/lang/String;");
+            toString(1).Should().Be("1");
+            toString(666).Should().Be("666");
+        }
+
+        [TestMethod]
+        public void Can_call_string_static_method_with_two_int_args()
+        {
+            var jre = JavaInstall.Default.Runtime;
+            jre.Should().NotBeNull();
+
+            var clazz = jre.Environment.FindClass("java/lang/Integer");
+            var method = jre.Environment.GetStaticMethodID(clazz, "toString", "(II)Ljava/lang/String;");
+            var builder = new ProxyMethodBuilder(jre);
+            var toString = (Func<int, int, string>)builder.BuildCallStaticMethodDelegate(clazz, method, "(II)Ljava/lang/String;");
+            toString(1, 10).Should().Be("1");
+            toString(666, 10).Should().Be("666");
         }
 
     }

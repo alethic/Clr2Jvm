@@ -8,7 +8,7 @@ namespace Clr2Jvm.Interop.Native
     public unsafe struct JavaVMOption
     {
 
-        public byte* optionString;
+        public void* optionString;
 
         public void* extraInfo;
 

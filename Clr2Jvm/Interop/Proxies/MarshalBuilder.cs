@@ -30,12 +30,27 @@ namespace Clr2Jvm.Interop.Proxies
         public JavaRuntime Runtime => runtime;
 
         /// <summary>
+        /// Returns <c>true</c> if this marshaller can marshal for the specified Java parameter descriptor.
+        /// </summary>
+        /// <param name="descriptor"></param>
+        /// <returns></returns>
+        public abstract bool CanMarshal(JavaParameterDescriptor descriptor);
+
+        /// <summary>
+        /// Returns the marshal type for the given Java parameter descriptor, or <c>null</c> if this builder does not
+        /// suppor the given parameter.
+        /// </summary>
+        /// <param name="descriptor"></param>
+        /// <returns></returns>
+        public abstract TypeInfo GetMarshalType(JavaParameterDescriptor descriptor);
+
+        /// <summary>
         /// Returns the managed type for the given Java parameter descriptor, or <c>null</c> if this builder does not
         /// support the given parameter.
         /// </summary>
-        /// <param name="parameter"></param>
+        /// <param name="descriptor"></param>
         /// <returns></returns>
-        public abstract TypeInfo GetManagedType(JavaParameterDescriptor parameter);
+        public abstract TypeInfo GetManagedType(JavaParameterDescriptor descriptor);
 
         /// <summary>
         /// Accepts an original parameter expression, and replaces it with a new parameter expression to be used in the
@@ -47,12 +62,17 @@ namespace Clr2Jvm.Interop.Proxies
         public abstract Func<Expression, Expression> MarshalParameter(JavaParameterDescriptor descriptor, ref Expression argument);
 
         /// <summary>
-        /// Accepts an expression to call the native method, the parameter expression to assign the result to, and returns the execution body.
+        /// Returns an expression that marshals the given expression into the given result.
         /// </summary>
         /// <param name="descriptor"></param>
-        /// <param name="call"></param>
+        /// <param name="expression"></param>
         /// <returns></returns>
-        public abstract Expression MarshalReturn(JavaParameterDescriptor descriptor, Expression call, out ParameterExpression result);
+        public abstract Expression MarshalReturn(JavaParameterDescriptor descriptor, Expression expression);
+
+        /// <summary>
+        /// Gets an expression that accesses the current Java environment.
+        /// </summary>
+        protected Expression EnvironmentExpression => Expression.Property(Expression.Constant(runtime), nameof(JavaRuntime.Environment));
 
     }
 

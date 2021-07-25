@@ -24,6 +24,16 @@ namespace Clr2Jvm.Interop.Proxies
 
         }
 
+        public override bool CanMarshal(JavaParameterDescriptor descriptor)
+        {
+            return false;
+        }
+
+        public override TypeInfo GetMarshalType(JavaParameterDescriptor descriptor)
+        {
+            throw new NotImplementedException();
+        }
+
         public override TypeInfo GetManagedType(JavaParameterDescriptor parameter)
         {
             return parameter.Type == JavaDescriptorType.Object && parameter.ArrayRank == 0 ? typeof(object).GetTypeInfo() : null;
@@ -34,7 +44,7 @@ namespace Clr2Jvm.Interop.Proxies
             throw new NotImplementedException();
         }
 
-        public override Func<Expression, Expression> MarshalReturn(JavaParameterDescriptor descriptor, ref Expression value)
+        public override Expression MarshalReturn(JavaParameterDescriptor descriptor, Expression expression)
         {
             throw new NotImplementedException();
         }

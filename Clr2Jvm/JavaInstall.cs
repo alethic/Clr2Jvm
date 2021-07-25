@@ -1,12 +1,13 @@
-﻿using Clr2Jvm.Interop.Native;
-
-using System;
+﻿using System;
 using System.Buffers;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
+
+using Clr2Jvm.Interop.Native;
+using Clr2Jvm.Interop.Text;
 
 namespace Clr2Jvm
 {
@@ -121,27 +122,24 @@ namespace Clr2Jvm
             jni.GetDefaultJavaVMInitArgs(ref args);
 
             // assemble JVM options
-            var optsList = new List<string>();
-            if (options.Options != null && options.Options.Count > 0)
-                optsList.AddRange(options.Options);
+            var optsList = options.Options?.Where(i => !string.IsNullOrWhiteSpace(i)).ToArray() ?? Array.Empty<string>();
 
             // marshal assembled options into native array
-            var enc = JavaUtf8Encoding.Default;
-            var osz = optsList.Count + 1;
+            var osz = optsList.Length + 1;
             var opt = osz > 128 ? new JavaVMOption[osz] : stackalloc JavaVMOption[osz];
-            var opm = new IMemoryOwner<byte>[osz];
+            var ops = new JavaUtf8String[osz];
             var oph = new MemoryHandle[osz];
+            var rdr = JavaUtf8StringReader.Default;
 
             try
             {
                 // copy arguments into options list
-                for (int i = 0; i < optsList.Count; i++)
+                for (int i = 0; i < optsList.Length; i++)
                 {
                     var s = optsList[i];
-                    opm[i] = MemoryPool<byte>.Shared.Rent(enc.GetByteCount(s));
-                    enc.GetBytes(s, opm[i].Memory.Span);
-                    oph[i] = opm[i].Memory.Pin();
-                    opt[i].optionString = (byte*)oph[i].Pointer;
+                    ops[i] = rdr.Read(s);
+                    oph[i] = ops[i].Pin();
+                    opt[i].optionString = oph[i].Pointer;
                 }
 
                 try
@@ -163,11 +161,11 @@ namespace Clr2Jvm
             }
             finally
             {
-                // attempt to discard the allocated memory
-                for (int i = 0; i < optsList.Count; i++)
+                // release the allocated option strings
+                for (int i = 0; i < optsList.Length; i++)
                 {
                     oph[i].Dispose();
-                    opm[i].Dispose();
+                    ops[i].Dispose();
                 }
             }
         }

@@ -1,16 +1,28 @@
-﻿using Clr2Jvm.Interop.Reflection;
-
-using System;
+﻿using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace Clr2Jvm.Interop.Native
+using Clr2Jvm.Interop.Native;
+using Clr2Jvm.Interop.Reflection;
+using Clr2Jvm.Interop.Text;
+
+namespace Clr2Jvm.Interop
 {
 
     /// <summary>
     /// Provides high level methods for the current JNI environment.
     /// </summary>
-    class JavaEnvironment
+    partial class JavaEnvironment
     {
+
+        static class ArgTypes
+        {
+
+            public readonly static Type[] CallStaticMethodArgTypes = new[] { typeof(JClass), typeof(JMethodID), typeof(ReadOnlySpan<JValue>) };
+            public readonly static Type[] CallMethodArgTypes = new[] { typeof(JObject), typeof(JMethodID), typeof(ReadOnlySpan<JValue>) };
+            public readonly static Type[] CallNonvirtualMethodArgTypes = new[] { typeof(JObject), typeof(JClass), typeof(JMethodID), typeof(ReadOnlySpan<JValue>) };
+
+        }
 
         readonly JavaRuntime runtime;
         readonly JniEnv env;
@@ -132,9 +144,9 @@ namespace Clr2Jvm.Interop.Native
         /// <returns></returns>
         public unsafe JClass FindClass(JavaClassDescriptor signature)
         {
-            using var _name = JavaUtf8Marshaller.Default.Marshal(signature);
+            using var _name = JavaUtf8StringReader.Default.Read(signature);
 
-            var cls = env.FindClass(_name);
+            var cls = env.FindClass(_name.Span);
             ThrowIfException();
             return cls;
         }
@@ -164,6 +176,16 @@ namespace Clr2Jvm.Interop.Native
                 if (p.IsNull == false)
                     env.ReleaseStringChars(@string, c);
             }
+        }
+
+        /// <summary>
+        /// Generates a new <see cref="JString"/> for the given .NET string.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public JString NewString(string value)
+        {
+            return value != null ? env.NewString(MemoryMarshal.Cast<char, JChar>(value.AsSpan()), value.Length) : JString.Null;
         }
 
         /// <summary>
@@ -204,10 +226,10 @@ namespace Clr2Jvm.Interop.Native
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
 
-            using var _name = JavaUtf8Marshaller.Default.Marshal(name);
-            using var _signature = JavaUtf8Marshaller.Default.Marshal(signature);
+            using var _name = JavaUtf8StringReader.Default.Read(name);
+            using var _signature = JavaUtf8StringReader.Default.Read(signature);
 
-            var ret = env.GetFieldID(clazz, _name, _signature);
+            var ret = env.GetFieldID(clazz, _name.Span, _signature.Span);
             ThrowIfException();
             return ret;
         }
@@ -257,10 +279,10 @@ namespace Clr2Jvm.Interop.Native
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
 
-            using var _name = JavaUtf8Marshaller.Default.Marshal(name);
-            using var _signature = JavaUtf8Marshaller.Default.Marshal(signature);
+            using var _name = JavaUtf8StringReader.Default.Read(name);
+            using var _signature = JavaUtf8StringReader.Default.Read(signature);
 
-            var ret = env.GetStaticMethodID(clazz, _name, _signature);
+            var ret = env.GetStaticMethodID(clazz, _name.Span, _signature.Span);
             ThrowIfException();
             return ret;
         }
@@ -314,10 +336,10 @@ namespace Clr2Jvm.Interop.Native
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
 
-            using var _name = JavaUtf8Marshaller.Default.Marshal(name);
-            using var _signature = JavaUtf8Marshaller.Default.Marshal(signature);
+            using var _name = JavaUtf8StringReader.Default.Read(name);
+            using var _signature = JavaUtf8StringReader.Default.Read(signature);
 
-            var ret = env.GetMethodID(clazz, _name, _signature);
+            var ret = env.GetMethodID(clazz, _name.Span, _signature.Span);
             ThrowIfException();
             return ret;
         }
@@ -357,8 +379,10 @@ namespace Clr2Jvm.Interop.Native
             }
         }
 
+        public readonly static MethodInfo CallStaticVoidMethodInfo = typeof(JavaEnvironment).GetMethod(nameof(JavaEnvironment.CallStaticVoidMethod), BindingFlags.Public | BindingFlags.Instance, null, ArgTypes.CallStaticMethodArgTypes, null);
+
         /// <summary>
-        /// Invokes the specified static method that returns void.
+        /// Invokes the specified static method.
         /// </summary>
         /// <param name="clazz"></param>
         /// <param name="method"></param>
@@ -376,7 +400,7 @@ namespace Clr2Jvm.Interop.Native
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns void.
+        /// Invokes the specified static method.
         /// </summary>
         /// <param name="clazz"></param>
         /// <param name="method"></param>
@@ -395,7 +419,7 @@ namespace Clr2Jvm.Interop.Native
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns void.
+        /// Invokes the specified static method.
         /// </summary>
         /// <param name="clazz"></param>
         /// <param name="name"></param>
@@ -409,7 +433,7 @@ namespace Clr2Jvm.Interop.Native
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
 
-            var m = GetMethodID(clazz, name, signature);
+            var m = GetStaticMethodID(clazz, name, signature);
             if (m.IsNull)
                 throw new JavaException($"Could not find method '{name}'.");
 
@@ -417,7 +441,7 @@ namespace Clr2Jvm.Interop.Native
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns void.
+        /// Invokes the specified static method.
         /// </summary>
         /// <param name="clazz"></param>
         /// <param name="name"></param>
@@ -437,7 +461,7 @@ namespace Clr2Jvm.Interop.Native
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns void.
+        /// Invokes the specified static method.
         /// </summary>
         /// <param name="clazz"></param>
         /// <param name="name"></param>
@@ -446,8 +470,6 @@ namespace Clr2Jvm.Interop.Native
         /// <returns></returns>
         public void CallStaticVoidMethod(JavaClassDescriptor clazz, string name, JavaMethodDescriptor signature, params JValue[] args)
         {
-            if (string.IsNullOrWhiteSpace(clazz))
-                throw new ArgumentException($"'{nameof(clazz)}' cannot be null or whitespace.", nameof(clazz));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
@@ -469,54 +491,58 @@ namespace Clr2Jvm.Interop.Native
             }
         }
 
+        public readonly static MethodInfo CallVoidMethodInfo = typeof(JavaEnvironment).GetMethod(nameof(JavaEnvironment.CallVoidMethod), BindingFlags.Instance | BindingFlags.Public, null, ArgTypes.CallMethodArgTypes, null);
+
         /// <summary>
-        /// Invokes the specified static method that returns an object.
+        /// Invokes the specified instance method.
         /// </summary>
-        /// <param name="clazz"></param>
+        /// <param name="instance"></param>
         /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public JObject CallStaticObjectMethod(JClass clazz, JMethodID method, ReadOnlySpan<JValue> args)
+        public void CallVoidMethod(JObject instance, JMethodID method, ReadOnlySpan<JValue> args)
         {
-            if (clazz.IsNull)
-                throw new ArgumentNullException(nameof(clazz));
+            if (instance.IsNull)
+                throw new ArgumentNullException(nameof(instance));
             if (method.IsNull)
                 throw new ArgumentNullException(nameof(method));
 
-            var ret = env.CallStaticObjectMethodA(clazz, method, args);
+            env.CallVoidMethodA(instance, method, args);
             ThrowIfException();
-            return ret;
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns an object.
+        /// Invokes the specified instance method.
         /// </summary>
-        /// <param name="clazz"></param>
+        /// <param name="instance"></param>
         /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public JObject CallStaticObjectMethod(JClass clazz, JMethodID method, params JValue[] args)
+        public void CallVoidMethod(JObject instance, JMethodID method, params JValue[] args)
         {
-            if (clazz.IsNull)
-                throw new ArgumentNullException(nameof(clazz));
+            if (instance.IsNull)
+                throw new ArgumentNullException(nameof(instance));
             if (method.IsNull)
                 throw new ArgumentNullException(nameof(method));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            return CallStaticObjectMethod(clazz, method, (ReadOnlySpan<JValue>)args);
+            CallVoidMethod(instance, method, (ReadOnlySpan<JValue>)args);
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns an object.
+        /// Invokes the specified instance method.
         /// </summary>
+        /// <param name="instance"></param>
         /// <param name="clazz"></param>
         /// <param name="name"></param>
         /// <param name="signature"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public JObject CallStaticObjectMethod(JClass clazz, string name, JavaMethodDescriptor signature, ReadOnlySpan<JValue> args)
+        public void CallVoidMethod(JObject instance, JClass clazz, string name, JavaMethodDescriptor signature, ReadOnlySpan<JValue> args)
         {
+            if (instance.IsNull)
+                throw new ArgumentNullException(nameof(instance));
             if (clazz.IsNull)
                 throw new ArgumentNullException(nameof(clazz));
             if (string.IsNullOrWhiteSpace(name))
@@ -526,41 +552,22 @@ namespace Clr2Jvm.Interop.Native
             if (m.IsNull)
                 throw new JavaException($"Could not find method '{name}'.");
 
-            return CallStaticObjectMethod(clazz, m, args);
+            CallVoidMethod(instance, m, args);
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns an object.
+        /// Invokes the specified instance method.
         /// </summary>
+        /// <param name="instance"></param>
         /// <param name="clazz"></param>
         /// <param name="name"></param>
         /// <param name="signature"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public JObject CallStaticObjectMethod(JClass clazz, string name, JavaMethodDescriptor signature, params JValue[] args)
+        public void CallVoidMethod(JObject instance, JavaClassDescriptor clazz, string name, JavaMethodDescriptor signature, params JValue[] args)
         {
-            if (clazz.IsNull)
-                throw new ArgumentNullException(nameof(clazz));
-            if (string.IsNullOrWhiteSpace(name))
-                throw new ArgumentNullException(nameof(name));
-            if (args is null)
-                throw new ArgumentNullException(nameof(args));
-
-            return CallStaticObjectMethod(clazz, name, signature, (ReadOnlySpan<JValue>)args);
-        }
-
-        /// <summary>
-        /// Invokes the specified static method that returns an object.
-        /// </summary>
-        /// <param name="clazz"></param>
-        /// <param name="name"></param>
-        /// <param name="signature"></param>
-        /// <param name="args"></param>
-        /// <returns></returns>
-        public JObject CallStaticObjectMethod(JavaClassDescriptor clazz, string name, JavaMethodDescriptor signature, params JValue[] args)
-        {
-            if (string.IsNullOrWhiteSpace(clazz))
-                throw new ArgumentException($"'{nameof(clazz)}' cannot be null or whitespace.", nameof(clazz));
+            if (instance.IsNull)
+                throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
@@ -574,7 +581,7 @@ namespace Clr2Jvm.Interop.Native
                 if (cls.IsNull)
                     throw new JavaException($"Could not find '{clazz}'.");
 
-                return CallStaticObjectMethod(cls, name, signature, (ReadOnlySpan<JValue>)args);
+                CallVoidMethod(instance, cls, name, signature, (ReadOnlySpan<JValue>)args);
             }
             finally
             {
@@ -582,79 +589,86 @@ namespace Clr2Jvm.Interop.Native
             }
         }
 
+        public readonly static MethodInfo CallNonvirtualVoidMethodInfo = typeof(JavaEnvironment).GetMethod(nameof(JavaEnvironment.CallNonvirtualVoidMethod), BindingFlags.Instance | BindingFlags.Public, null, ArgTypes.CallNonvirtualMethodArgTypes, null);
+
         /// <summary>
-        /// Invokes the specified static method that returns an object.
+        /// Invokes the specified non-virtual method.
         /// </summary>
         /// <param name="instance"></param>
+        /// <param name="clazz"></param>
         /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public JObject CallObjectMethod(JObject instance, JMethodID method, ReadOnlySpan<JValue> args)
+        public void CallNonvirtualVoidMethod(JObject instance, JClass clazz, JMethodID method, ReadOnlySpan<JValue> args)
         {
             if (instance.IsNull)
                 throw new ArgumentNullException(nameof(instance));
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
             if (method.IsNull)
                 throw new ArgumentNullException(nameof(method));
 
-            var ret = env.CallObjectMethodA(instance, method, args);
+            env.CallNonvirtualVoidMethodA(instance, clazz, method, args);
             ThrowIfException();
-            return ret;
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns an object.
+        /// Invokes the specified non-virtual method.
         /// </summary>
         /// <param name="instance"></param>
+        /// <param name="clazz"></param>
         /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public JObject CallObjectMethod(JObject instance, JMethodID method, params JValue[] args)
+        public void CallNonvirtualVoidMethod(JObject instance, JClass clazz, JMethodID method, params JValue[] args)
         {
             if (instance.IsNull)
                 throw new ArgumentNullException(nameof(instance));
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
             if (method.IsNull)
                 throw new ArgumentNullException(nameof(method));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            return CallObjectMethod(instance, method, (ReadOnlySpan<JValue>)args);
+            CallNonvirtualVoidMethod(instance, clazz, method, (ReadOnlySpan<JValue>)args);
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns an object.
+        /// Invokes the specified non-virtual method.
         /// </summary>
         /// <param name="instance"></param>
+        /// <param name="clazz"></param>
         /// <param name="name"></param>
         /// <param name="signature"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public JObject CallObjectMethod(JObject instance, string name, JavaMethodDescriptor signature, ReadOnlySpan<JValue> args)
+        public void CallNonvirtualVoidMethod(JObject instance, JClass clazz, string name, JavaMethodDescriptor signature, ReadOnlySpan<JValue> args)
         {
             if (instance.IsNull)
                 throw new ArgumentNullException(nameof(instance));
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
 
-            var c = env.GetObjectClass(instance);
-            if (c.IsNull)
-                throw new JavaException($"Could not find class for instance.");
-
-            var m = GetMethodID(c, name, signature);
+            var m = GetMethodID(clazz, name, signature);
             if (m.IsNull)
                 throw new JavaException($"Could not find method '{name}'.");
 
-            return CallObjectMethod(instance, m, (ReadOnlySpan<JValue>)args);
+            CallNonvirtualVoidMethod(instance, clazz, m, args);
         }
 
         /// <summary>
-        /// Invokes the specified static method that returns an object.
+        /// Invokes the specified non-virtual method.
         /// </summary>
         /// <param name="instance"></param>
+        /// <param name="clazz"></param>
         /// <param name="name"></param>
         /// <param name="signature"></param>
         /// <param name="args"></param>
         /// <returns></returns>
-        public JObject CallObjectMethod(JObject instance, string name, JavaMethodDescriptor signature, params JValue[] args)
+        public void CallNonvirtualVoidMethod(JObject instance, JavaClassDescriptor clazz, string name, JavaMethodDescriptor signature, params JValue[] args)
         {
             if (instance.IsNull)
                 throw new ArgumentNullException(nameof(instance));
@@ -663,7 +677,20 @@ namespace Clr2Jvm.Interop.Native
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            return CallObjectMethod(instance, name, signature, (ReadOnlySpan<JValue>)args);
+            var cls = new JClass();
+
+            try
+            {
+                cls = FindClass(clazz);
+                if (cls.IsNull)
+                    throw new JavaException($"Could not find '{clazz}'.");
+
+                CallNonvirtualVoidMethod(instance, cls, name, signature, (ReadOnlySpan<JValue>)args);
+            }
+            finally
+            {
+                SafeDeleteLocalRef(cls);
+            }
         }
 
     }

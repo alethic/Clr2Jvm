@@ -16,14 +16,9 @@ namespace Clr2Jvm.Interop.Proxies
         /// </summary>
         /// <param name="runtime"></param>
         public BooleanMarshalBuilder(JavaRuntime runtime) : 
-            base(runtime)
+            base(runtime, JavaDescriptorType.Boolean)
         {
 
-        }
-
-        public override bool CanMarshalType(JavaDescriptorType type)
-        {
-            return type == JavaDescriptorType.Boolean;
         }
 
     }

@@ -1,7 +1,8 @@
-﻿using Clr2Jvm.Interop.Native;
-
-using System;
+﻿using System;
 using System.Threading;
+
+using Clr2Jvm.Interop;
+using Clr2Jvm.Interop.Native;
 
 namespace Clr2Jvm
 {
@@ -12,7 +13,7 @@ namespace Clr2Jvm
     public class JavaRuntime
     {
 
-        internal const JniVersion MinJniVersion = JniVersion.V1_2;
+        internal const JniVersion MinJniVersion = JniVersion.V1_6;
 
         readonly JavaInstall install;
         readonly JavaOptions options;

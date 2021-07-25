@@ -1,0 +1,218 @@
+﻿<#@ template language="C#" hostspecific="true" #>
+<#@ output extension=".g.cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(NuGetPackageRoot)\newtonsoft.json\13.0.1\lib\net45\Newtonsoft.Json.dll" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+#pragma warning disable IDE0047
+#pragma warning disable IDE1006
+
+using System;
+using System.Reflection;
+
+using Clr2Jvm.Interop.Native;
+using Clr2Jvm.Interop.Reflection;
+
+namespace Clr2Jvm.Interop
+{
+
+    partial class JavaEnvironment
+    {
+
+<#
+foreach (var type in new[] {
+    ("Boolean", "JBoolean"),
+    ("Byte",    "JByte"),
+    ("Char",    "JChar"),
+    ("Short",   "JShort"),
+    ("Int",     "JInt"),
+    ("Long",    "JLong"),
+    ("Float",   "JFloat"),
+    ("Double",  "JDouble"),
+    ("Object",  "JObject"),
+})
+{
+#>
+        public readonly static MethodInfo CallStatic<#= type.Item1 #>MethodInfo = typeof(JavaEnvironment).GetMethod(nameof(JavaEnvironment.CallStatic<#= type.Item1 #>Method), BindingFlags.Instance | BindingFlags.Public, null, ArgTypes.CallStaticMethodArgTypes, null);
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, JMethodID method, ReadOnlySpan<JValue> args)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+
+            var ret = env.CallStatic<#= type.Item1 #>MethodA(clazz, method, args);
+            ThrowIfException();
+            return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, JMethodID method, params JValue[] args)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            return CallStatic<#= type.Item1 #>Method(clazz, method, (ReadOnlySpan<JValue>)args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, JMethodID method)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+
+            return CallStatic<#= type.Item1 #>Method(clazz, method, ReadOnlySpan<JValue>.Empty);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="name"></param>
+        /// <param name="signature"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, string name, JavaMethodDescriptor signature, ReadOnlySpan<JValue> args)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+
+            var m = GetStaticMethodID(clazz, name, signature);
+            if (m.IsNull)
+                throw new JavaException($"Could not find method '{name}'.");
+
+            return CallStatic<#= type.Item1 #>Method(clazz, m, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="name"></param>
+        /// <param name="signature"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, string name, JavaMethodDescriptor signature, params JValue[] args)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            return CallStatic<#= type.Item1 #>Method(clazz, name, signature, (ReadOnlySpan<JValue>)args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="name"></param>
+        /// <param name="signature"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, string name, JavaMethodDescriptor signature)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+
+            return CallStatic<#= type.Item1 #>Method(clazz, name, signature, ReadOnlySpan<JValue>.Empty);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="name"></param>
+        /// <param name="signature"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JavaClassDescriptor clazz, string name, JavaMethodDescriptor signature, params JValue[] args)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+            if (args is null)
+                throw new ArgumentNullException(nameof(args));
+
+            var cls = new JClass();
+
+            try
+            {
+                cls = FindClass(clazz);
+                if (cls.IsNull)
+                    throw new JavaException($"Could not find '{clazz}'.");
+
+                return CallStatic<#= type.Item1 #>Method(cls, name, signature, (ReadOnlySpan<JValue>)args);
+            }
+            finally
+            {
+                SafeDeleteLocalRef(cls);
+            }
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="name"></param>
+        /// <param name="signature"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JavaClassDescriptor clazz, string name, JavaMethodDescriptor signature)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException(nameof(name));
+
+            var cls = new JClass();
+
+            try
+            {
+                cls = FindClass(clazz);
+                if (cls.IsNull)
+                    throw new JavaException($"Could not find '{clazz}'.");
+
+                return CallStatic<#= type.Item1 #>Method(cls, name, signature, ReadOnlySpan<JValue>.Empty);
+            }
+            finally
+            {
+                SafeDeleteLocalRef(cls);
+            }
+        }
+
+<#
+}
+#>
+
+    }
+
+}

@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Buffers;
 
-namespace Clr2Jvm.Interop
+namespace Clr2Jvm.Interop.Text
 {
 
     /// <summary>
     /// Represents a marshalled string.
     /// </summary>
-    unsafe struct JavaUtf8String : IDisposable
+    unsafe readonly struct JavaUtf8String : IDisposable
     {
-
-        public static implicit operator ReadOnlySpan<byte>(JavaUtf8String s) => s.buffer.Span;
 
         readonly IMemoryOwner<byte> owner;
         readonly Memory<byte> buffer;
@@ -25,6 +23,17 @@ namespace Clr2Jvm.Interop
             this.owner = owner ?? throw new ArgumentNullException(nameof(owner));
             this.buffer = buffer;
         }
+
+        /// <summary>
+        /// Gets the underlying data of the UTF8 string.
+        /// </summary>
+        public ReadOnlySpan<byte> Span => buffer.Span;
+
+        /// <summary>
+        /// Pins the string in place for use in unmanaged code.
+        /// </summary>
+        /// <returns></returns>
+        public MemoryHandle Pin() => buffer.Pin();
 
         /// <summary>
         /// Disposes of the instance.

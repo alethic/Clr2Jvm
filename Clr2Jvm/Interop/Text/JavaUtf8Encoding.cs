@@ -1,10 +1,11 @@
 ﻿using System.Text;
 
-namespace Clr2Jvm.Interop.Native
+namespace Clr2Jvm.Interop.Text
 {
 
     /// <summary>
     /// Implements the Java modified-UTF8 encoding format.
+    /// TODO: just calls standard UTF8 for now
     /// </summary>
     class JavaUtf8Encoding : Encoding
     {

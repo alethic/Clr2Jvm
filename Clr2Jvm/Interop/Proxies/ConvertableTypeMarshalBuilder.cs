@@ -13,33 +13,52 @@ namespace Clr2Jvm.Interop.Proxies
     abstract class ConvertableTypeMarshalBuilder<TManaged, TMarshal> : MarshalBuilder
     {
 
+        readonly JavaDescriptorType type;
+
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
         /// <param name="runtime"></param>
-        protected ConvertableTypeMarshalBuilder(JavaRuntime runtime) :
+        protected ConvertableTypeMarshalBuilder(JavaRuntime runtime, JavaDescriptorType type) :
             base(runtime)
         {
-
+            this.type = type;
         }
 
-        public abstract bool CanMarshalType(JavaDescriptorType type);
-
-        public override TypeInfo GetManagedType(JavaParameterDescriptor parameter)
+        /// <summary>
+        /// Returns <c>true</c> if the given type can be handled by this marshaler.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public virtual bool CanMarshalType(JavaDescriptorType type)
         {
-            return parameter.Type != JavaDescriptorType.Void && CanMarshalType(parameter.Type) && parameter.ArrayRank == 0 ? typeof(TManaged).GetTypeInfo() : null;
+            return type == this.type;
         }
 
-        public override Func<Expression, Expression> MarshalParameter(JavaParameterDescriptor parameter, ref Expression expression)
+        public override bool CanMarshal(JavaParameterDescriptor descriptor)
         {
-            expression = Expression.Convert(expression, typeof(TMarshal));
+            return descriptor.Type != JavaDescriptorType.Void && CanMarshalType(descriptor.Type) && descriptor.ArrayRank == 0;
+        }
+
+        public override TypeInfo GetMarshalType(JavaParameterDescriptor descriptor)
+        {
+            return typeof(TMarshal).GetTypeInfo();
+        }
+
+        public override TypeInfo GetManagedType(JavaParameterDescriptor descriptor)
+        {
+            return typeof(TManaged).GetTypeInfo();
+        }
+
+        public override Func<Expression, Expression> MarshalParameter(JavaParameterDescriptor descriptor, ref Expression argument)
+        {
+            argument = Expression.Convert(argument, typeof(TMarshal));
             return body => body;
         }
 
-        public override Expression MarshalReturn(JavaParameterDescriptor descriptor, Expression call, out ParameterExpression result)
+        public override Expression MarshalReturn(JavaParameterDescriptor descriptor, Expression expression)
         {
-            result = Expression.Variable(typeof(TManaged), "@result");
-            return Expression.Assign(result, Expression.Convert(call, typeof(TManaged)));
+            return Expression.Convert(expression, typeof(TManaged));
         }
 
     }

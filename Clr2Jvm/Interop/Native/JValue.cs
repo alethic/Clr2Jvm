@@ -30,6 +30,15 @@ namespace Clr2Jvm.Interop.Native
         public static implicit operator JValue(JDouble d) => new JValue(d);
         public static implicit operator JValue(JObject o) => new JValue(o);
 
+        public static implicit operator JValue(bool z) => new JValue((JBoolean)z);
+        public static implicit operator JValue(sbyte b) => new JValue((JByte)b);
+        public static implicit operator JValue(char c) => new JValue((JChar)c);
+        public static implicit operator JValue(short s) => new JValue((JShort)s);
+        public static implicit operator JValue(int i) => new JValue((JInt)i);
+        public static implicit operator JValue(long j) => new JValue((JLong)j);
+        public static implicit operator JValue(float f) => new JValue((JFloat)f);
+        public static implicit operator JValue(double d) => new JValue((JDouble)d);
+
         public JValue(JBoolean z)
         {
             this = new JValue();
