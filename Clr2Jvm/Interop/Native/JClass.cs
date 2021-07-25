@@ -12,7 +12,9 @@ namespace Clr2Jvm.Interop.Native
     {
 
         public static implicit operator IntPtr(JClass o) => o.Handle;
-        public static implicit operator JClass(IntPtr h) => new JClass(h);
+        public static implicit operator JClass(IntPtr h) => new(h);
+        public static implicit operator JObject(JClass c) => c.Handle;
+        public static explicit operator JClass(JObject o) => o.Handle;
 
         readonly IntPtr handle;
 
@@ -26,9 +28,14 @@ namespace Clr2Jvm.Interop.Native
         }
 
         /// <summary>
-        /// Gets the underlying jclass handle.
+        /// Gets the underlying handle.
         /// </summary>
         public IntPtr Handle => handle;
+
+        /// <summary>
+        /// Returns <c>true</c> if the handle is null.
+        /// </summary>
+        public bool IsNull => handle == IntPtr.Zero;
 
     }
 

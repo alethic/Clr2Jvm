@@ -30,6 +30,11 @@ namespace Clr2Jvm.Interop.Native
         /// </summary>
         public IntPtr Handle => handle;
 
+        /// <summary>
+        /// Returns <c>true</c> if the method is null.
+        /// </summary>
+        public bool IsNull => handle == IntPtr.Zero;
+
     }
 
 }

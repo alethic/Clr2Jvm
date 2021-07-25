@@ -23,7 +23,11 @@ namespace Clr2Jvm.Tests
             var env = jre.Environment;
             env.Should().NotBeNull();
 
-            var classLoaderCls = env.FindClass("java/lang/ClassLoader");
+            var cls = env.FindClass("java/lang/Class");
+            if (cls.IsNull)
+                throw new JavaException("Could not load 'java.lang.Class'.");
+
+            var mth = env.CallStaticObjectMethod(cls, "getDeclaredMethod", "(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;");
         }
 
     }

@@ -14,6 +14,8 @@ namespace Clr2Jvm.Interop.Native
         public static implicit operator IntPtr(JString o) => o.Handle;
         public static implicit operator JString(IntPtr h) => new JString(h);
 
+        public static explicit operator JString(JObject h) => new JString(h);
+
         readonly IntPtr handle;
 
         /// <summary>
@@ -29,6 +31,11 @@ namespace Clr2Jvm.Interop.Native
         /// Gets the underlying 'jstring' handle.
         /// </summary>
         public IntPtr Handle => handle;
+
+        /// <summary>
+        /// Returns <c>true</c> if the handle is null.
+        /// </summary>
+        public bool IsNull => handle == IntPtr.Zero;
 
     }
 

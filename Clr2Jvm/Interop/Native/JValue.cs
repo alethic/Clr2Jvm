@@ -1,11 +1,10 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace Clr2Jvm.Interop.Native
 {
 
     /// <summary>
-    /// Represents a reference to a 'jcharArray'.
+    /// Represents a 'jvalue'.
     /// </summary>
     [StructLayout(LayoutKind.Explicit)]
     readonly struct JValue
@@ -33,118 +32,55 @@ namespace Clr2Jvm.Interop.Native
 
         public JValue(JBoolean z)
         {
-            this.b = 0;
-            this.c = '\n';
-            this.s = 0;
-            this.i = 0;
-            this.j = 0;
-            this.f = 0;
-            this.d = 0;
-            this.l = IntPtr.Zero;
+            this = new JValue();
             this.z = z;
         }
 
         public JValue(JByte b)
         {
-            this.z = 0;
-            this.c = '\n';
-            this.s = 0;
-            this.i = 0;
-            this.j = 0;
-            this.f = 0;
-            this.d = 0;
-            this.l = IntPtr.Zero;
+            this = new JValue();
             this.b = b;
         }
 
         public JValue(JChar c)
         {
-            this.z = 0;
-            this.b = 0;
-            this.s = 0;
-            this.i = 0;
-            this.j = 0;
-            this.f = 0;
-            this.d = 0;
-            this.l = IntPtr.Zero;
+            this = new JValue();
             this.c = c;
         }
 
         public JValue(JShort s)
         {
-            this.z = 0;
-            this.b = 0;
-            this.c = '\n';
-            this.i = 0;
-            this.j = 0;
-            this.f = 0;
-            this.d = 0;
-            this.l = IntPtr.Zero;
+            this = new JValue();
             this.s = s;
         }
 
         public JValue(JInt i)
         {
-            this.z = 0;
-            this.b = 0;
-            this.c = '\n';
-            this.s = 0;
-            this.j = 0;
-            this.f = 0;
-            this.d = 0;
-            this.l = IntPtr.Zero;
+            this = new JValue();
             this.i = i;
         }
 
         public JValue(JLong j)
         {
-            this.z = 0;
-            this.b = 0;
-            this.c = '\n';
-            this.s = 0;
-            this.i = 0;
-            this.f = 0;
-            this.d = 0;
-            this.l = IntPtr.Zero;
+            this = new JValue();
             this.j = j;
         }
 
         public JValue(JFloat f)
         {
-            this.z = 0;
-            this.b = 0;
-            this.c = '\n';
-            this.s = 0;
-            this.i = 0;
-            this.j = 0;
-            this.d = 0;
-            this.l = IntPtr.Zero;
+            this = new JValue();
             this.f = f;
         }
 
         public JValue(JDouble d)
         {
-            this.z = 0;
-            this.b = 0;
-            this.c = '\n';
-            this.s = 0;
-            this.i = 0;
-            this.j = 0;
-            this.f = 0;
-            this.l = IntPtr.Zero;
+            this = new JValue();
             this.d = d;
         }
 
         public JValue(JObject l)
         {
-            this.z = 0;
-            this.b = 0;
-            this.c = '\n';
-            this.s = 0;
-            this.i = 0;
-            this.j = 0;
-            this.f = 0;
-            this.d = 0;
+            this = new JValue();
             this.l = l;
         }
 

@@ -148,10 +148,10 @@ abstract class TypeInfo
         {
             "va_list" =>                    null,
             "void*" =>                      new PointerTypeInfo("void*", marshalType ?? "void", managedType ?? "JVoid", isNullable, isSpan),
-            "char*" =>                      new PointerTypeInfo("char*", marshalType ?? "byte", managedType ?? "Char", isNullable, isSpan),
-            "const char*" =>                new PointerTypeInfo("const char*", marshalType ?? "byte", managedType ?? "Char", isNullable, isSpan),
+            "char*" =>                      new PointerTypeInfo("char*", marshalType ?? "byte", managedType ?? "byte", isNullable, isSpan),
+            "const char*" =>                new PointerTypeInfo("const char*", marshalType ?? "byte", managedType ?? "byte", isNullable, isSpan),
             "jvalue" =>                     new BuiltinTypeInfo("jvalue", marshalType ?? "JValue", managedType ?? "JValue"),
-            "jvalue*" =>                    new BuiltinTypeInfo("jvalue*", marshalType ?? "JValue*", managedType ?? "JValue"),
+            "jvalue*" =>                    new PointerTypeInfo("jvalue*", marshalType ?? "JValue", managedType ?? "JValue", isNullable, isSpan),
             "jsize" =>                      new BuiltinTypeInfo("jsize", marshalType ?? "int", managedType ?? "JSize"),
             "jsize*" =>                     new PointerTypeInfo("jsize*", marshalType ?? "int", managedType ?? "JSize", isNullable, isSpan),
             "jboolean" =>                   new BuiltinTypeInfo("jboolean", marshalType ?? "byte", managedType ?? "JBoolean"),
@@ -182,7 +182,7 @@ abstract class TypeInfo
             "jdoubleArray" =>               new HandleTypeInfo("jdoubleArray", marshalType ?? "IntPtr", managedType ?? "JDoubleArray"),
             "jobjectArray" =>               new HandleTypeInfo("jobjectArray", marshalType ?? "IntPtr", managedType ?? "JObjectArray"),
             "const JNINativeMethod*" =>     new PointerTypeInfo("const JNINativeMethod*", marshalType ?? "JniNativeMethod", managedType ?? "JniNativeMethod"),
-            "jobjectRefType" =>             new BuiltinTypeInfo("jobjectRefType", marshalType ?? "JniObjectReferenceType", managedType ?? "JniObjectReferenceType"),
+            "jobjectRefType" =>             new BuiltinTypeInfo("jobjectRefType", marshalType ?? "JObjectRefType", managedType ?? "JObjectRefType"),
             "jfieldID" =>                   new FieldTypeInfo("jfieldID"),
             "jmethodID" =>                  new MethodTypeInfo("jmethodID"),
             "jobject" =>                    new HandleTypeInfo("jobject", marshalType ?? "IntPtr", managedType ?? "JObject"),
@@ -310,13 +310,13 @@ class PointerTypeInfo : TypeInfo
     public override string GetManagedType(Direction direction)
     {
         if (direction == Direction.In && IsSpan == false)
-            return $"{managed}Pointer";
+            return $"JPointer<{managed}>";
         if (direction == Direction.In && IsSpan)
-            return $"{managed}Pointer";
+            return $"JPointer<{managed}>";
         if (direction == Direction.Return && IsSpan)
-            return $"{managed}Pointer";
+            return $"JPointer<{managed}>";
         if (direction == Direction.Return && IsSpan == false)
-            return $"{managed}Pointer";
+            return $"JPointer<{managed}>";
 
         return managed;
     }
@@ -335,30 +335,32 @@ class PointerTypeInfo : TypeInfo
         throw new NotImplementedException($"Name: {name}, Direction: {direction}");
     }
 
-    public override string GetMarshalToManagedExpression(string variable, Direction direction)
-    {
-        return $"{variable}";
-    }
-
     public override string GetManagedParamExpression(string name, Direction direction)
     {
         if (direction == Direction.In && IsSpan == false)
-            return $"{managed}Pointer {name}";
+            return $"JPointer<{managed}> {name}";
         if (direction == Direction.In && IsSpan)
-            return $"{managed}Pointer {name}";
+            return $"ReadOnlySpan<{managed}> {name}";
         if (direction == Direction.Out && IsSpan == false)
             return $"out {managed} {name}";
         if (direction == Direction.Ref && IsSpan)
-            return $"{managed}Span {name}";
+            return $"Span<{managed}> {name}";
 
         throw new NotImplementedException($"Name: {name}, Direction: {direction}");
     }
 
     public override IEnumerable<string> GetBeforeStatements(string variable, Direction direction)
     {
+        if (direction == Direction.In && IsSpan)
+        {
+            yield return $"fixed ({managed}* _{variable}_ptr = {variable})";
+            yield return "{";
+            yield break;
+        }
+
         if (direction == Direction.Ref && IsSpan)
         {
-            yield return $"fixed ({marshal}* _{variable}_ptr = {variable}.Span)";
+            yield return $"fixed ({managed}* _{variable}_ptr = {variable})";
             yield return "{";
             yield break;
         }
@@ -369,17 +371,37 @@ class PointerTypeInfo : TypeInfo
         if (direction == Direction.In && IsSpan == false)
             return variable;
         if (direction == Direction.In && IsSpan)
-            return $"{variable}";
+            return $"({marshal}*)_{variable}_ptr";
         if (direction == Direction.Out && IsSpan == false)
             return $"out var _{variable}";
         if (direction == Direction.Ref && IsSpan)
-            return $"_{variable}_ptr";
+            return $"({marshal}*)_{variable}_ptr";
 
+        throw new NotImplementedException($"Variable: {variable}, Direction: {direction}");
+    }
+
+    public override string GetMarshalToManagedExpression(string variable, Direction direction)
+    {
+        if (direction == Direction.In && IsSpan == false)
+            return $"{variable}";
+        if (direction == Direction.In && IsSpan)
+            return $"{variable}";
+        if (direction == Direction.Return && IsSpan)
+            return $"(JPointer<{managed}>)({managed}*){variable}";
+        if (direction == Direction.Return && IsSpan == false)
+            return $"{variable}";
+            
         throw new NotImplementedException($"Variable: {variable}, Direction: {direction}");
     }
 
     public override IEnumerable<string> GetAfterStatements(string variable, Direction direction)
     {
+        if (direction == Direction.In && IsSpan)
+        {
+            yield return "}";
+            yield break;
+        }
+
         if (direction == Direction.Out && IsSpan == false)
         {
             yield return $"{variable} = _{variable};";
@@ -530,7 +552,7 @@ static string Escape (string value)
 
 static string CreateDelegateTypeDefinition(JniNativeFunction entry)
 {
-    if (entry.Parameters.Any(i => i.IsParamArray || i.Type == null || i.Type.Name == "va_list"))
+    if (entry.Parameters.Any(i => i.Type == null || i.Type.Name == "va_list" || i.Name == "..."))
         return null;
 
     var builder = new StringBuilder();
@@ -553,7 +575,7 @@ static string CreateDelegateTypeDefinition(JniNativeFunction entry)
 
 static string CreateMethodDefinition(JniNativeFunction entry)
 {
-    if (entry.Parameters.Any(i => i.IsParamArray || i.Type == null || i.Type.Name == "va_list"))
+    if (entry.Parameters.Any(i => i.Type == null || i.Type.Name == "va_list" || i.Name == "..."))
         return null;
 
     var builder = new StringBuilder();
@@ -587,9 +609,6 @@ static string CreateMethodDefinition(JniNativeFunction entry)
     foreach (var s in beforeStmts)
         builder.AppendLine(s);
 
-    if (entry.ReturnType != null)
-        builder.Append("@return = ");
-
     var expression = new StringBuilder();
     expression.Append($"_{entry.Name}");
     expression.Append("(");
@@ -597,14 +616,17 @@ static string CreateMethodDefinition(JniNativeFunction entry)
     for (int i = 0; i < entry.Parameters.Length; i++)
         expression.Append(", ").Append(entry.Parameters[i].Type.GetManagedToMarshalExpression(entry.Parameters[i].Name, entry.Parameters[i].Direction));
     expression.Append(")");
-
-    builder.Append(expression.ToString()).AppendLine(";");
+    
+    if (entry.ReturnType != null)
+        builder.Append("@return = ").Append(entry.ReturnType.GetMarshalToManagedExpression(expression.ToString(), Direction.Return)).AppendLine(";");
+    else
+        builder.Append(expression.ToString()).AppendLine(";");
     
     foreach (var s in afterStmts)
         builder.AppendLine(s);
 
     if (entry.ReturnType != null)
-        builder.AppendLine($"return {entry.ReturnType.GetMarshalToManagedExpression("@return", Direction.Return)};");
+        builder.AppendLine($"return @return;");
 
     builder.AppendLine("}");
 

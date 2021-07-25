@@ -26,9 +26,14 @@ namespace Clr2Jvm.Interop.Native
         }
 
         /// <summary>
-        /// Gets the underlying jmethodID handle.
+        /// Gets the underlying handle.
         /// </summary>
         public IntPtr Handle => handle;
+
+        /// <summary>
+        /// Returns <c>true</c> if the method is null.
+        /// </summary>
+        public bool IsNull => handle == IntPtr.Zero;
 
     }
 
