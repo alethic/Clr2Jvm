@@ -121,7 +121,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -151,8 +151,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -276,7 +276,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -306,8 +306,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -431,7 +431,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -461,8 +461,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -586,7 +586,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -616,8 +616,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -741,7 +741,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -771,8 +771,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -896,7 +896,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -926,8 +926,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1051,7 +1051,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -1081,8 +1081,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1206,7 +1206,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -1236,8 +1236,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1361,7 +1361,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -1391,8 +1391,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(instance));
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {

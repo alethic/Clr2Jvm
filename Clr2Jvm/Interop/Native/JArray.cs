@@ -11,30 +11,29 @@ namespace Clr2Jvm.Interop.Native
     readonly struct JArray
     {
 
-        public static implicit operator IntPtr(JArray o) => o.Handle;
-        public static implicit operator JArray(IntPtr h) => new JArray(h);
+        public static implicit operator IntPtr(JArray o) => o.reference;
+        public static implicit operator JArray(IntPtr h) => new(h);
 
-        public static implicit operator JObject(JArray o) => o.Handle;
-        public static explicit operator JArray(JObject o) => new JArray(o.Handle);
+        public static implicit operator JObject(JArray o) => o.reference;
+        public static explicit operator JArray(JObject o) => new(o);
 
-        readonly IntPtr handle;
+        public static readonly JArray Null = new(IntPtr.Zero);
+
+        readonly IntPtr reference;
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        /// <param name="handle"></param>
-        public JArray(IntPtr handle)
+        /// <param name="reference"></param>
+        public JArray(IntPtr reference)
         {
-            if (handle == IntPtr.Zero)
-                throw new ArgumentException("Invalid IntPtr.");
-
-            this.handle = handle;
+            this.reference = reference;
         }
 
         /// <summary>
-        /// Gets the underlying jarray handle.
+        /// Returns <c>true</c> if the handle is null.
         /// </summary>
-        public IntPtr Handle => handle;
+        public bool IsNull => reference == IntPtr.Zero;
 
     }
 

@@ -11,10 +11,10 @@ namespace Clr2Jvm.Interop.Native
     {
 
         public static implicit operator byte(JBoolean o) => o.Value;
-        public static implicit operator JBoolean(byte value) => new JBoolean(value);
+        public static implicit operator JBoolean(byte value) => new(value);
 
         public static implicit operator bool(JBoolean o) => o.Value != 0;
-        public static implicit operator JBoolean(bool value) => new JBoolean(value ? (byte)1 : (byte)0);
+        public static implicit operator JBoolean(bool value) => new(value ? (byte)1 : (byte)0);
 
         readonly byte value;
 

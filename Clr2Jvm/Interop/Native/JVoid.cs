@@ -11,7 +11,7 @@ namespace Clr2Jvm.Interop.Native
     {
 
         public static implicit operator byte(JVoid o) => o.Value;
-        public static implicit operator JVoid(byte value) => new JVoid(value);
+        public static implicit operator JVoid(byte value) => new(value);
 
         readonly byte value;
 

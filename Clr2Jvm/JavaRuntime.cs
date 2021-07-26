@@ -15,10 +15,31 @@ namespace Clr2Jvm
 
         internal const JniVersion MinJniVersion = JniVersion.V1_6;
 
+        static readonly AsyncLocal<JavaRuntime> current = new();
+
+        /// <summary>
+        /// Establishes the specified runtime as the default runtime for the execution context.
+        /// </summary>
+        /// <param name="runtime"></param>
+        /// <returns></returns>
+        public static IDisposable BeginScope(JavaRuntime runtime)
+        {
+            // replace current with new runtime, give disposable back to revert
+            var prev = current.Value;
+            current.Value = runtime;
+            return new JavaRuntimeScope(() => current.Value = prev);
+        }
+
+        /// <summary>
+        /// Gets the current <see cref="JavaRuntime"/> in scope, or the default if none available.
+        /// </summary>
+        public static JavaRuntime Current => current.Value ?? JavaInstall.Default.Runtime;
+
         readonly JavaInstall install;
         readonly JavaOptions options;
         readonly JavaVM jvm;
         readonly ThreadLocal<JavaEnvironment> env;
+        readonly JavaObjectManager proxies;
 
         /// <summary>
         /// Initializes a new instance.

@@ -1,29 +1,37 @@
-﻿using Clr2Jvm.Interop.Native;
+﻿using System;
+
+using Clr2Jvm.Interop.Native;
 
 namespace Clr2Jvm.Interop.Reflection
 {
 
     /// <summary>
-    /// Provides introspection capabilities for a loaded Java class.
+    /// Provides native introspection capabilities for a loaded Java class.
     /// </summary>
-    class JavaReflectedClassInfo : JavaReflectedInfo
+    class JavaReflectedClassInfo
     {
+
+        readonly JObjectGlobalRef reference;
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
         /// <param name="runtime"></param>
         /// <param name="handle"></param>
-        public JavaReflectedClassInfo(JavaRuntime runtime, JClass handle) :
-            base(runtime, handle)
+        public JavaReflectedClassInfo(JavaRuntime runtime, JClass handle)
         {
+            if (runtime is null)
+                throw new ArgumentNullException(nameof(runtime));
+            if (handle.IsNull)
+                throw new ArgumentNullException(nameof(handle));
 
+            reference = new JObjectGlobalRef(runtime, handle);
         }
 
         /// <summary>
-        /// Gets the underlying handle.
+        /// Gets the reference to the associated native class.
         /// </summary>
-        public new JClass Handle => base.Handle.Handle;
+        public JObjectGlobalRef Ref => reference;
 
         /// <summary>
         /// Fetches the constructors from the referenced class.
@@ -33,7 +41,7 @@ namespace Clr2Jvm.Interop.Reflection
         {
             var cls = new JClass();
             var mth = new JObject();
-            var env = Runtime.Environment;
+            var env = Ref.Runtime.Environment;
 
             try
             {
@@ -45,7 +53,9 @@ namespace Clr2Jvm.Interop.Reflection
                 if (mth.IsNull)
                     return null;
 
-                return new JavaReflectedMethodInfo(Runtime, this, mth);
+                env.FromReflectedMethod
+
+                return new JavaReflectedMethodInfo(Ref.Runtime, this, mth);
             }
             finally
             {

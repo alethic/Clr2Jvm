@@ -11,29 +11,24 @@ namespace Clr2Jvm.Interop.Native
     readonly struct JFieldID
     {
 
-        public static implicit operator IntPtr(JFieldID o) => o.Handle;
-        public static implicit operator JFieldID(IntPtr h) => new JFieldID(h);
+        public static implicit operator IntPtr(JFieldID o) => o.reference;
+        public static implicit operator JFieldID(IntPtr h) => new(h);
 
-        readonly IntPtr handle;
+        internal readonly IntPtr reference;
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        /// <param name="handle"></param>
-        public JFieldID(IntPtr handle)
+        /// <param name="reference"></param>
+        public JFieldID(IntPtr reference)
         {
-            this.handle = handle;
+            this.reference = reference;
         }
-
-        /// <summary>
-        /// Gets the underlying jfieldID handle.
-        /// </summary>
-        public IntPtr Handle => handle;
 
         /// <summary>
         /// Returns <c>true</c> if the method is null.
         /// </summary>
-        public bool IsNull => handle == IntPtr.Zero;
+        public bool IsNull => reference == IntPtr.Zero;
 
     }
 

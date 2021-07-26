@@ -2,6 +2,7 @@
 using System.Linq.Expressions;
 using System.Reflection;
 
+using Clr2Jvm.Interop.Native;
 using Clr2Jvm.Interop.Reflection;
 
 namespace Clr2Jvm.Interop.Proxies
@@ -26,17 +27,17 @@ namespace Clr2Jvm.Interop.Proxies
 
         public override bool CanMarshal(JavaParameterDescriptor descriptor)
         {
-            return false;
+            return descriptor.Type == JavaDescriptorType.Object && descriptor.ArrayRank == 0;
         }
 
         public override TypeInfo GetMarshalType(JavaParameterDescriptor descriptor)
         {
-            throw new NotImplementedException();
+            return typeof(JObject).GetTypeInfo();
         }
 
         public override TypeInfo GetManagedType(JavaParameterDescriptor parameter)
         {
-            return parameter.Type == JavaDescriptorType.Object && parameter.ArrayRank == 0 ? typeof(object).GetTypeInfo() : null;
+            throw new NotImplementedException();
         }
 
         public override Func<Expression, Expression> MarshalParameter(JavaParameterDescriptor descriptor, ref Expression argument)

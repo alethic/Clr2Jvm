@@ -11,32 +11,27 @@ namespace Clr2Jvm.Interop.Native
     readonly struct JThrowable
     {
 
-        public static implicit operator IntPtr(JThrowable o) => o.Handle;
-        public static implicit operator JThrowable(IntPtr h) => new JThrowable(h);
+        public static implicit operator IntPtr(JThrowable o) => o.reference;
+        public static implicit operator JThrowable(IntPtr h) => new(h);
 
-        public static implicit operator JObject(JThrowable o) => o.Handle;
-        public static explicit operator JThrowable(JObject o) => new JThrowable(o.Handle);
+        public static implicit operator JObject(JThrowable o) => o.reference;
+        public static explicit operator JThrowable(JObject o) => new(o);
 
-        readonly IntPtr handle;
+        readonly IntPtr reference;
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        /// <param name="handle"></param>
-        public JThrowable(IntPtr handle)
+        /// <param name="reference"></param>
+        public JThrowable(IntPtr reference)
         {
-            this.handle = handle;
+            this.reference = reference;
         }
-
-        /// <summary>
-        /// Gets the underlying jarray handle.
-        /// </summary>
-        public IntPtr Handle => handle;
 
         /// <summary>
         /// Returns <c>true</c> if the handle is null.
         /// </summary>
-        public bool IsNull => handle == IntPtr.Zero;
+        public bool IsNull => reference == IntPtr.Zero;
 
     }
 

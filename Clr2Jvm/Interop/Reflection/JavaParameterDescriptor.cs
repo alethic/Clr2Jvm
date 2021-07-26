@@ -7,7 +7,7 @@ namespace Clr2Jvm.Interop.Reflection
     /// <summary>
     /// Describes a Java type signature.
     /// </summary>
-    readonly struct JavaParameterDescriptor
+    readonly struct JavaParameterDescriptor : IEquatable<JavaParameterDescriptor>
     {
 
         public static JavaParameterDescriptor Void() => new(JavaDescriptorType.Void, null, 0);
@@ -23,6 +23,9 @@ namespace Clr2Jvm.Interop.Reflection
 
         public static implicit operator JavaParameterDescriptor(string s) => Parse(s);
         public static implicit operator string(JavaParameterDescriptor s) => s.ToString();
+
+        public static bool operator ==(JavaParameterDescriptor left, JavaParameterDescriptor right) => left.Equals(right);
+        public static bool operator !=(JavaParameterDescriptor left, JavaParameterDescriptor right) => !(left == right);
 
         /// <summary>
         /// Parses the given type signature.
@@ -166,6 +169,21 @@ namespace Clr2Jvm.Interop.Reflection
             });
 
             return b.ToString();
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is JavaParameterDescriptor descriptor && Equals(descriptor);
+        }
+
+        public bool Equals(JavaParameterDescriptor other)
+        {
+            return type == other.type && clazz == other.clazz && arrayRank == other.arrayRank;
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(type, clazz, arrayRank);
         }
 
     }

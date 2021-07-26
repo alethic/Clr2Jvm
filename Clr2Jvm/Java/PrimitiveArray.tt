@@ -1,0 +1,101 @@
+﻿<#@ template language="C#" hostspecific="true" #>
+<#@ output extension=".g.cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(NuGetPackageRoot)\newtonsoft.json\13.0.1\lib\net45\Newtonsoft.Json.dll" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+#pragma warning disable IDE0047
+#pragma warning disable IDE1006
+
+using System;
+
+using Clr2Jvm.Interop.Native;
+
+namespace Clr2Jvm.Java
+{
+<#
+foreach (var type in new[] {
+    ("Boolean",     "JBoolean",     "bool"),
+    ("Byte",        "JByte",        "sbyte"),
+    ("Char",        "JChar",        "char"),
+    ("Short",       "JShort",       "short"),
+    ("Int",         "JInt",         "int"),
+    ("Long",        "JLong",        "long"),
+    ("Float",       "JFloat",       "float"),
+    ("Double",      "JDouble",      "double"),
+})
+{
+#>
+
+    /// <summary>
+    /// Provides an implementation of the Java primitive <#= type.Item1 #> array type.
+    /// </summary>
+    public sealed class <#= type.Item1 #>Array : PrimitiveArray<<#= type.Item3 #>>
+    {
+
+        /// <summary>
+        /// Allocates a new <#= type.Item1 #> array within Java.
+        /// </summary>
+        /// <param name="runtime"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        static JObjectGlobalRef NewArray(JavaRuntime runtime, int length)
+        {
+            if (runtime == null)
+                throw new ArgumentNullException(nameof(runtime));
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+
+            var env = runtime.Environment;
+
+            var h = <#= type.Item2 #>Array.Null;
+
+            try
+            {
+                h = env.New<#= type.Item1 #>Array(length);
+                return new JObjectGlobalRef(runtime, h);
+            }
+            finally
+            {
+                env.SafeDeleteLocalRef(h);
+            }
+        }
+
+        /// <summary>
+        /// Initializes a new instance.
+        /// </summary>
+        /// <param name="reference"></param>
+        internal <#= type.Item1 #>Array(JObjectGlobalRef reference) :
+            base(reference)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes a new instance.
+        /// </summary>
+        /// <param name="length"></param>
+        public <#= type.Item1 #>Array(int length) :
+            base(NewArray(JavaRuntime.Current, length))
+        {
+
+        }
+
+        protected override <#= type.Item3 #> GetIndex(int index)
+        {
+            return Ref.Runtime.Environment.Get<#= type.Item1 #>ArrayElement((<#= type.Item2 #>Array)Ref.Handle, index);
+        }
+
+        protected override void SetIndex(int index, <#= type.Item3 #> value)
+        {
+            Ref.Runtime.Environment.Set<#= type.Item1 #>ArrayElement((<#= type.Item2 #>Array)Ref.Handle, index, value);
+        }
+
+    }
+<#
+}
+#>
+
+}

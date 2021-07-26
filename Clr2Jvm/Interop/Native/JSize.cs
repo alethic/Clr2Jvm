@@ -10,8 +10,8 @@ namespace Clr2Jvm.Interop.Native
     readonly struct JSize
     {
 
-        public static implicit operator int(JSize o) => o.Value;
-        public static implicit operator JSize(int value) => new JSize(value);
+        public static implicit operator int(JSize o) => o.value;
+        public static implicit operator JSize(int value) => new(value);
 
         readonly int value;
 
@@ -23,11 +23,6 @@ namespace Clr2Jvm.Interop.Native
         {
             this.value = value;
         }
-
-        /// <summary>
-        /// Gets the underlying 'jsize' value.
-        /// </summary>
-        public int Value => value;
 
     }
 

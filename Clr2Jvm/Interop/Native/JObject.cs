@@ -11,29 +11,26 @@ namespace Clr2Jvm.Interop.Native
     readonly struct JObject
     {
 
-        public static implicit operator IntPtr(JObject o) => o.Handle;
+        public static implicit operator IntPtr(JObject o) => o.reference;
         public static implicit operator JObject(IntPtr h) => new(h);
 
-        readonly IntPtr handle;
+        public static readonly JObject Null = new(IntPtr.Zero);
+
+        readonly IntPtr reference;
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        /// <param name="handle"></param>
-        public JObject(IntPtr handle)
+        /// <param name="reference"></param>
+        public JObject(IntPtr reference)
         {
-            this.handle = handle;
+            this.reference = reference;
         }
-
-        /// <summary>
-        /// Gets the underlying handle.
-        /// </summary>
-        public IntPtr Handle => handle;
 
         /// <summary>
         /// Returns <c>true</c> if the handle is null.
         /// </summary>
-        public bool IsNull => handle == IntPtr.Zero;
+        public bool IsNull => reference == IntPtr.Zero;
 
     }
 

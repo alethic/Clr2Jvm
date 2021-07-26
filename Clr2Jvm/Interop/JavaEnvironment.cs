@@ -80,6 +80,17 @@ namespace Clr2Jvm.Interop
         }
 
         /// <summary>
+        /// Returns <c>true</c> if the two objects are the same object.
+        /// </summary>
+        /// <param name="object1"></param>
+        /// <param name="object2"></param>
+        /// <returns></returns>
+        internal bool IsSameObject(JObject object1, JObject object2)
+        {
+            return env.IsSameObject(object1, object2);
+        }
+
+        /// <summary>
         /// Deletes the specified local reference for the specified object.
         /// </summary>
         /// <param name="handle"></param>
@@ -152,6 +163,126 @@ namespace Clr2Jvm.Interop
         }
 
         /// <summary>
+        /// Creates a new instance of the specified class by invoking the given constructor method.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="constructor"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public JObject NewObject(JClass clazz, JMethodID constructor, ReadOnlySpan<JValue> args)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (constructor.IsNull)
+                throw new ArgumentNullException(nameof(constructor));
+
+            var result = env.NewObjectA(clazz, constructor, args);
+            ThrowIfException();
+            return result;
+        }
+
+        /// <summary>
+        /// Creates a new instance of the specified class by invoking the given constructor method.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="constructor"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public JObject NewObject(JClass clazz, JMethodID constructor, params JValue[] args)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (constructor.IsNull)
+                throw new ArgumentNullException(nameof(constructor));
+
+            return NewObject(clazz, constructor, (ReadOnlySpan<JValue>)args);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the specified class by invoking the given constructor method.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="constructor"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public JObject NewObject(JClass clazz, JavaMethodDescriptor constructor, ReadOnlySpan<JValue> args)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (constructor.Return.Type != JavaDescriptorType.Void)
+                throw new ArgumentException("Cannot create new object with init method that does not return void.", nameof(constructor));
+
+            var m = GetMethodID(clazz, "<init>", constructor);
+            if (m.IsNull)
+                throw new JavaException($"Could not find constructor method matching '{constructor}'.");
+
+            return NewObject(clazz, m, args);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the specified class by invoking the given constructor method.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="constructor"></param>
+        /// <param name="args"></param>
+        /// <returns></returns>
+        public JObject NewObject(JClass clazz, JavaMethodDescriptor constructor, params JValue[] args)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (constructor.Return.Type != JavaDescriptorType.Void)
+                throw new ArgumentException("Cannot create new object with init method that does not return void.", nameof(constructor));
+
+            return NewObject(clazz, constructor, (ReadOnlySpan<JValue>)args);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the specified class by invoking the default constructor.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <returns></returns>
+        public JObject NewObject(JClass clazz)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+
+            return NewObject(clazz, "()V", ReadOnlySpan<JValue>.Empty);
+        }
+
+        /// <summary>
+        /// Creates a new instance of the specified class by invoking the default constructor.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <returns></returns>
+        public JObject NewObject(JavaClassDescriptor clazz)
+        {
+            var cls = JClass.Null;
+
+            try
+            {
+                cls = FindClass(clazz);
+                if (cls.IsNull)
+                    throw new JavaException($"Could not find '{clazz}'.");
+
+                return NewObject(cls);
+            }
+            finally
+            {
+                SafeDeleteLocalRef(cls);
+            }
+        }
+
+        /// <summary>
+        /// Generates a new <see cref="JString"/> for the given .NET string.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public JString NewString(string value)
+        {
+            return value != null ? env.NewString(MemoryMarshal.Cast<char, JChar>(value.AsSpan()), value.Length) : JString.Null;
+        }
+
+        /// <summary>
         /// Gets the value of the Java string.
         /// </summary>
         /// <param name="string"></param>
@@ -179,13 +310,137 @@ namespace Clr2Jvm.Interop
         }
 
         /// <summary>
-        /// Generates a new <see cref="JString"/> for the given .NET string.
+        /// Gets the length of the specified array.
         /// </summary>
-        /// <param name="value"></param>
+        /// <param name="array"></param>
         /// <returns></returns>
-        public JString NewString(string value)
+        public int GetArrayLength(JArray array)
         {
-            return value != null ? env.NewString(MemoryMarshal.Cast<char, JChar>(value.AsSpan()), value.Length) : JString.Null;
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+
+            var ret = env.GetArrayLength(array);
+            ThrowIfException();
+            return ret;
+        }
+
+        /// <summary>
+        /// Creates a new object array of the specified size, initialized with the specified element.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="length"></param>
+        /// <param name="initialElement"></param>
+        /// <returns></returns>
+        public JObjectArray NewObjectArray(JClass clazz, int length, JObject initialElement)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+
+            var arr = env.NewObjectArray(length, clazz, initialElement);
+            ThrowIfException();
+            return arr;
+        }
+
+        /// <summary>
+        /// Creates a new object array of the specified size, initalized to empty.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="length"></param>
+        /// <returns></returns>
+        public JObjectArray NewObjectArray(JClass clazz, int length)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+
+            return NewObjectArray(clazz, length, JObject.Null);
+        }
+
+        /// <summary>
+        /// Creates a new object array of the specified size, initialized to the specified value.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="length"></param>
+        /// <param name="initialElement"></param>
+        /// <returns></returns>
+        public JObjectArray NewObjectArray(JavaClassDescriptor clazz, int length, JObject initialElement)
+        {
+            var cls = JClass.Null;
+
+            try
+            {
+                cls = FindClass(clazz);
+                if (cls.IsNull)
+                    throw new JavaException($"Could not find '{clazz}'.");
+
+                return NewObjectArray(cls, length, initialElement);
+            }
+            finally
+            {
+                SafeDeleteLocalRef(cls);
+            }
+        }
+
+        /// <summary>
+        /// Creates a new object array of the specified size, initialized to empty.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="size"></param>
+        /// <returns></returns>
+        public JObjectArray NewObjectArray(JavaClassDescriptor clazz, int size)
+        {
+            var cls = JClass.Null;
+
+            try
+            {
+                cls = FindClass(clazz);
+                if (cls.IsNull)
+                    throw new JavaException($"Could not find '{clazz}'.");
+
+                return NewObjectArray(cls, size);
+            }
+            finally
+            {
+                SafeDeleteLocalRef(cls);
+            }
+        }
+
+        /// <summary>
+        /// Gets an element of an Object array.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public JObject GetObjectArrayElement(JObjectArray array, int index)
+        {
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            var ret = env.GetObjectArrayElement(array, index);
+            ThrowIfException();
+            return ret;
+        }
+
+        /// <summary>
+        /// Sets an element of an Object array.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        public void SetObjectArrayElement(JObjectArray array, int index, JObject value)
+        {
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            env.SetObjectArrayElement(array, index, value);
+            ThrowIfException();
         }
 
         /// <summary>
@@ -207,8 +462,7 @@ namespace Clr2Jvm.Interop
             }
             finally
             {
-                if (cls.IsNull == false)
-                    env.DeleteLocalRef(cls);
+                SafeDeleteLocalRef(cls);
             }
         }
 
@@ -248,7 +502,7 @@ namespace Clr2Jvm.Interop
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
 
-            var ret = GetFieldID(clazz.Handle, name, signature);
+            var ret = GetFieldID((JClass)clazz.Ref.Handle, name, signature);
             return ret.IsNull ? null : new JavaFieldInfo(clazz, ret);
         }
 
@@ -263,6 +517,19 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(method));
 
             return env.FromReflectedMethod(method);
+        }
+
+        /// <summary>
+        /// Converts the given reflected method into a <see cref="JMethodID"/>.
+        /// </summary>
+        /// <param name="method"></param>
+        /// <returns></returns>
+        public JObject ToReflectedMethod(JClass clazz, JMethodID method, bool isStatic)
+        {
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+
+            return env.ToReflectedMethod(clazz, method, isStatic);
         }
 
         /// <summary>
@@ -301,25 +568,11 @@ namespace Clr2Jvm.Interop
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
 
-            var m = new JObject();
+            var m = GetStaticMethodID((JClass)clazz.Ref.Handle, name, signature);
+            if (m.IsNull)
+                return null;
 
-            try
-            {
-                var ret = GetStaticMethodID(clazz.Handle, name, signature);
-                if (ret.IsNull)
-                    return null;
-
-                m = env.ToReflectedMethod(clazz.Handle, ret, false);
-                ThrowIfException();
-                if (m.IsNull)
-                    throw new JavaException("Could not obtain reflected method.");
-
-                return ret.IsNull ? null : new JavaReflectedMethodInfo(runtime, clazz, m);
-            }
-            finally
-            {
-                SafeDeleteLocalRef(m);
-            }
+            return new JavaReflectedMethodInfo(runtime, clazz, m);
         }
 
         /// <summary>
@@ -339,9 +592,9 @@ namespace Clr2Jvm.Interop
             using var _name = JavaUtf8StringReader.Default.Read(name);
             using var _signature = JavaUtf8StringReader.Default.Read(signature);
 
-            var ret = env.GetMethodID(clazz, _name.Span, _signature.Span);
+            var m = env.GetMethodID(clazz, _name.Span, _signature.Span);
             ThrowIfException();
-            return ret;
+            return m;
         }
 
         /// <summary>
@@ -358,25 +611,11 @@ namespace Clr2Jvm.Interop
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentException($"'{nameof(name)}' cannot be null or whitespace.", nameof(name));
 
-            var m = new JObject();
+            var m = GetMethodID((JClass)clazz.Ref.Handle, name, signature);
+            if (m.IsNull)
+                return null;
 
-            try
-            {
-                var ret = GetMethodID(clazz.Handle, name, signature);
-                if (ret.IsNull)
-                    return null;
-
-                m = env.ToReflectedMethod(clazz.Handle, ret, false);
-                ThrowIfException();
-                if (m.IsNull)
-                    throw new JavaException("Could not obtain reflected method.");
-
-                return ret.IsNull ? null : new JavaReflectedMethodInfo(runtime, clazz, m);
-            }
-            finally
-            {
-                SafeDeleteLocalRef(m);
-            }
+            return new JavaReflectedMethodInfo(runtime, clazz, m);
         }
 
         public readonly static MethodInfo CallStaticVoidMethodInfo = typeof(JavaEnvironment).GetMethod(nameof(JavaEnvironment.CallStaticVoidMethod), BindingFlags.Public | BindingFlags.Instance, null, ArgTypes.CallStaticMethodArgTypes, null);
@@ -475,7 +714,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -573,7 +812,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {
@@ -677,7 +916,7 @@ namespace Clr2Jvm.Interop
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
 
-            var cls = new JClass();
+            var cls = JClass.Null;
 
             try
             {

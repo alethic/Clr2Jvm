@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 
 namespace Clr2Jvm.Interop.Native
 {
@@ -6,28 +7,25 @@ namespace Clr2Jvm.Interop.Native
     /// <summary>
     /// Represents a reference to a 'jweak'.
     /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
     readonly struct JWeak
     {
 
-        public static implicit operator IntPtr(JWeak o) => o.Handle;
-        public static implicit operator JWeak(IntPtr h) => new JWeak(h);
-        public static implicit operator JObject(JWeak w) => new JObject(w.Handle);
+        public static implicit operator JWeak(IntPtr h) => new(h);
+        public static implicit operator IntPtr(JWeak o) => o.reference;
 
-        readonly IntPtr handle;
+        public static implicit operator JObject(JWeak w) => new(w.reference);
+
+        readonly IntPtr reference;
 
         /// <summary>
         /// Initializes a new instance.
         /// </summary>
-        /// <param name="handle"></param>
-        public JWeak(IntPtr handle)
+        /// <param name="reference"></param>
+        public JWeak(IntPtr reference)
         {
-            this.handle = handle;
+            this.reference = reference;
         }
-
-        /// <summary>
-        /// Gets the underlying jweak handle.
-        /// </summary>
-        public IntPtr Handle => handle;
 
     }
 

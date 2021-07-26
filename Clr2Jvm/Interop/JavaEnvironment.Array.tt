@@ -1,0 +1,168 @@
+﻿<#@ template language="C#" hostspecific="true" #>
+<#@ output extension=".g.cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(NuGetPackageRoot)\newtonsoft.json\13.0.1\lib\net45\Newtonsoft.Json.dll" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+#pragma warning disable IDE0047
+#pragma warning disable IDE1006
+
+using System;
+using System.Runtime.InteropServices;
+
+using Clr2Jvm.Interop.Native;
+
+namespace Clr2Jvm.Interop
+{
+
+    partial class JavaEnvironment
+    {
+<#
+foreach (var type in new[] {
+    ("Boolean",     "JBoolean",     null),
+    ("Byte",        "JByte",        "sbyte"),
+    ("Char",        "JChar",        "char"),
+    ("Short",       "JShort",       "short"),
+    ("Int",         "JInt",         "int"),
+    ("Long",        "JLong",        "long"),
+    ("Float",       "JFloat",       "float"),
+    ("Double",      "JDouble",      "double"),
+})
+{
+#>
+
+        /// <summary>
+        /// Creates a new <#= type.Item1 #> array of the specified size.
+        /// </summary>
+        /// <param name="size"></param>
+        /// <param name="initialElement"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #>Array New<#= type.Item1 #>Array(int length)
+        {
+            if (length < 0)
+                throw new ArgumentOutOfRangeException(nameof(length));
+
+            var arr = env.New<#= type.Item1 #>Array(length);
+            ThrowIfException();
+            return arr;
+        }
+
+        /// <summary>
+        /// Copies the values into the specified array starting at the specified start index.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="start"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public void Set<#= type.Item1 #>ArrayRegion(<#= type.Item2 #>Array array, int start, ReadOnlySpan<<#= type.Item2 #>> values)
+        {
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+            if (start < 0)
+                throw new ArgumentOutOfRangeException(nameof(start));
+
+            env.Set<#= type.Item1 #>ArrayRegion(array, start, values.Length, values);
+            ThrowIfException();
+        }
+
+        /// <summary>
+        /// Copies the values into the specified array starting at the specified start index.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void Set<#= type.Item1 #>ArrayElement(<#= type.Item2 #>Array array, int index, <#= type.Item2 #> value)
+        {
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index));
+                
+            Set<#= type.Item1 #>ArrayRegion(array, index, stackalloc <#= type.Item2 #>[] { value });
+        }
+
+        /// <summary>
+        /// Copies the values from the specified array beginning at the start index into the buffer.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="start"></param>
+        /// <param name="buffer"></param>
+        /// <returns></returns>
+        public void Get<#= type.Item1 #>ArrayRegion(<#= type.Item2 #>Array array, int start, Span<<#= type.Item2 #>> buffer)
+        {
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+            if (start < 0)
+                throw new ArgumentOutOfRangeException(nameof(start));
+
+            env.Get<#= type.Item1 #>ArrayRegion(array, start, buffer.Length, buffer);
+            ThrowIfException();
+        }
+
+        /// <summary>
+        /// Gets the value of the array at the specified index.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="index"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> Get<#= type.Item1 #>ArrayElement(<#= type.Item2 #>Array array, int index)
+        {
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            var buffer = (Span<<#= type.Item2 #>>)stackalloc <#= type.Item2 #>[1];
+            Get<#= type.Item1 #>ArrayRegion(array, index, buffer);
+            return buffer[0];
+        }
+<#
+    if (type.Item3 != null)
+    {
+#>
+
+        /// <summary>
+        /// Copies the values into the specified array starting at the specified start index.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="start"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public void Set<#= type.Item1 #>ArrayRegion(<#= type.Item2 #>Array array, int start, ReadOnlySpan<<#= type.Item3 #>> values)
+        {
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+            if (start < 0)
+                throw new ArgumentOutOfRangeException(nameof(start));
+
+            Set<#= type.Item1 #>ArrayRegion(array, start, MemoryMarshal.Cast<<#= type.Item3 #>, <#= type.Item2 #>>(values));
+        }
+
+        /// <summary>
+        /// Copies the values into the specified array starting at the specified start index.
+        /// </summary>
+        /// <param name="array"></param>
+        /// <param name="index"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public void Set<#= type.Item1 #>ArrayElement(<#= type.Item2 #>Array array, int index, <#= type.Item3 #> value)
+        {
+            if (array.IsNull)
+                throw new ArgumentNullException(nameof(array));
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index));
+
+            Set<#= type.Item1 #>ArrayRegion(array, index, stackalloc <#= type.Item3 #>[] { value });
+        }
+<#
+    }
+#>
+<#
+}
+#>
+    }
+
+}

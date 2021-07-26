@@ -1,0 +1,71 @@
+﻿<#@ template language="C#" hostspecific="true" #>
+<#@ output extension=".g.cs" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="$(NuGetPackageRoot)\newtonsoft.json\13.0.1\lib\net45\Newtonsoft.Json.dll" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+#pragma warning disable IDE0047
+#pragma warning disable IDE1006
+
+using System;
+using System.Runtime.InteropServices;
+
+namespace Clr2Jvm.Interop.Native
+{
+<#
+foreach (var type in new[] {
+    ("Boolean",     "JBoolean" ),
+    ("Byte",        "JByte" ),
+    ("Char",        "JChar" ),
+    ("Short",       "JShort" ),
+    ("Int",         "JInt" ),
+    ("Long",        "JLong" ),
+    ("Float",       "JFloat" ),
+    ("Double",      "JDouble" ),
+    ("Object",      "JObject" ),
+})
+{
+#>
+
+    /// <summary>
+    /// Holds a reference to a Java <#= type.Item2 #> array.
+    /// </summary>
+    [StructLayout(LayoutKind.Sequential)]
+    readonly struct <#= type.Item2 #>Array
+    {
+
+        public static implicit operator IntPtr(<#= type.Item2 #>Array h) => h.reference;
+        public static implicit operator <#= type.Item2 #>Array(IntPtr h) => new(h);
+
+        public static implicit operator JObject(<#= type.Item2 #>Array h) => new(h);
+        public static implicit operator JArray(<#= type.Item2 #>Array h) => new(h);
+
+        public static explicit operator <#= type.Item2 #>Array(JObject h) => new(h);
+        public static explicit operator <#= type.Item2 #>Array(JArray h) => new(h);
+
+        public static readonly <#= type.Item2 #>Array Null = new(IntPtr.Zero);
+
+        readonly IntPtr reference;
+
+        /// <summary>
+        /// Initializes a new instance.
+        /// </summary>
+        /// <param name="reference"></param>
+        public <#= type.Item2 #>Array(IntPtr reference)
+        {
+            this.reference = reference;
+        }
+
+        /// <summary>
+        /// Returns <c>true</c> if the handle is null.
+        /// </summary>
+        public bool IsNull => reference == IntPtr.Zero;
+
+    }
+<#
+}
+#>
+
+}

@@ -61,6 +61,69 @@ foreach (var type in new[] {
         /// </summary>
         /// <param name="clazz"></param>
         /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStatic<#= type.Item1 #>Method(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStatic<#= type.Item1 #>Method(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStatic<#= type.Item1 #>Method(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java <#= type.Item1 #>.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
         public <#= type.Item2 #> CallStatic<#= type.Item1 #>Method(JClass clazz, JMethodID method, params JValue[] args)
@@ -164,8 +227,8 @@ foreach (var type in new[] {
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -192,8 +255,8 @@ foreach (var type in new[] {
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {

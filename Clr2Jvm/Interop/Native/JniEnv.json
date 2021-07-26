@@ -5198,7 +5198,7 @@
             {
                 "Name": "array",
                 "Type": {
-                    "Name": "jlongArray"
+                    "Name": "jfloatArray"
                 }
             },
             {

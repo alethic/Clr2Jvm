@@ -10,8 +10,8 @@ namespace Clr2Jvm.Interop.Native
     readonly struct JShort
     {
 
-        public static implicit operator short(JShort o) => o.Value;
-        public static implicit operator JShort(short value) => new JShort(value);
+        public static implicit operator short(JShort o) => o.value;
+        public static implicit operator JShort(short value) => new (value);
 
         readonly short value;
 

@@ -20,24 +20,24 @@ namespace Clr2Jvm.Interop.Native
         public static implicit operator JDouble(JValue v) => v.D;
         public static implicit operator JObject(JValue v) => v.L;
 
-        public static implicit operator JValue(JBoolean z) => new JValue(z);
-        public static implicit operator JValue(JByte b) => new JValue(b);
-        public static implicit operator JValue(JChar c) => new JValue(c);
-        public static implicit operator JValue(JShort s) => new JValue(s);
-        public static implicit operator JValue(JInt i) => new JValue(i);
-        public static implicit operator JValue(JLong j) => new JValue(j);
-        public static implicit operator JValue(JFloat f) => new JValue(f);
-        public static implicit operator JValue(JDouble d) => new JValue(d);
-        public static implicit operator JValue(JObject o) => new JValue(o);
+        public static implicit operator JValue(JBoolean z) => new(z);
+        public static implicit operator JValue(JByte b) => new(b);
+        public static implicit operator JValue(JChar c) => new(c);
+        public static implicit operator JValue(JShort s) => new(s);
+        public static implicit operator JValue(JInt i) => new(i);
+        public static implicit operator JValue(JLong j) => new(j);
+        public static implicit operator JValue(JFloat f) => new(f);
+        public static implicit operator JValue(JDouble d) => new(d);
+        public static implicit operator JValue(JObject o) => new(o);
 
-        public static implicit operator JValue(bool z) => new JValue((JBoolean)z);
-        public static implicit operator JValue(sbyte b) => new JValue((JByte)b);
-        public static implicit operator JValue(char c) => new JValue((JChar)c);
-        public static implicit operator JValue(short s) => new JValue((JShort)s);
-        public static implicit operator JValue(int i) => new JValue((JInt)i);
-        public static implicit operator JValue(long j) => new JValue((JLong)j);
-        public static implicit operator JValue(float f) => new JValue((JFloat)f);
-        public static implicit operator JValue(double d) => new JValue((JDouble)d);
+        public static implicit operator JValue(bool z) => new((JBoolean)z);
+        public static implicit operator JValue(sbyte b) => new((JByte)b);
+        public static implicit operator JValue(char c) => new((JChar)c);
+        public static implicit operator JValue(short s) => new((JShort)s);
+        public static implicit operator JValue(int i) => new((JInt)i);
+        public static implicit operator JValue(long j) => new((JLong)j);
+        public static implicit operator JValue(float f) => new((JFloat)f);
+        public static implicit operator JValue(double d) => new((JDouble)d);
 
         public JValue(JBoolean z)
         {

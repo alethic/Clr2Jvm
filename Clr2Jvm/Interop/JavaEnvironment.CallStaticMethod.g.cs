@@ -39,6 +39,69 @@ namespace Clr2Jvm.Interop
         /// </summary>
         /// <param name="clazz"></param>
         /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JBoolean CallStaticBooleanMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticBooleanMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Boolean.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JBoolean CallStaticBooleanMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticBooleanMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Boolean.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JBoolean CallStaticBooleanMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticBooleanMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Boolean.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
         /// <param name="args"></param>
         /// <returns></returns>
         public JBoolean CallStaticBooleanMethod(JClass clazz, JMethodID method, params JValue[] args)
@@ -142,8 +205,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -170,8 +233,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -206,6 +269,69 @@ namespace Clr2Jvm.Interop
             var ret = env.CallStaticByteMethodA(clazz, method, args);
             ThrowIfException();
             return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Byte.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JByte CallStaticByteMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticByteMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Byte.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JByte CallStaticByteMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticByteMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Byte.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JByte CallStaticByteMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticByteMethod(clazz, method, args);
         }
 
         /// <summary>
@@ -316,8 +442,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -344,8 +470,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -380,6 +506,69 @@ namespace Clr2Jvm.Interop
             var ret = env.CallStaticCharMethodA(clazz, method, args);
             ThrowIfException();
             return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Char.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JChar CallStaticCharMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticCharMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Char.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JChar CallStaticCharMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticCharMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Char.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JChar CallStaticCharMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticCharMethod(clazz, method, args);
         }
 
         /// <summary>
@@ -490,8 +679,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -518,8 +707,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -554,6 +743,69 @@ namespace Clr2Jvm.Interop
             var ret = env.CallStaticShortMethodA(clazz, method, args);
             ThrowIfException();
             return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Short.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JShort CallStaticShortMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticShortMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Short.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JShort CallStaticShortMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticShortMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Short.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JShort CallStaticShortMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticShortMethod(clazz, method, args);
         }
 
         /// <summary>
@@ -664,8 +916,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -692,8 +944,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -728,6 +980,69 @@ namespace Clr2Jvm.Interop
             var ret = env.CallStaticIntMethodA(clazz, method, args);
             ThrowIfException();
             return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Int.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JInt CallStaticIntMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticIntMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Int.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JInt CallStaticIntMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticIntMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Int.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JInt CallStaticIntMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticIntMethod(clazz, method, args);
         }
 
         /// <summary>
@@ -838,8 +1153,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -866,8 +1181,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -902,6 +1217,69 @@ namespace Clr2Jvm.Interop
             var ret = env.CallStaticLongMethodA(clazz, method, args);
             ThrowIfException();
             return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Long.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JLong CallStaticLongMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticLongMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Long.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JLong CallStaticLongMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticLongMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Long.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JLong CallStaticLongMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticLongMethod(clazz, method, args);
         }
 
         /// <summary>
@@ -1012,8 +1390,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1040,8 +1418,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1076,6 +1454,69 @@ namespace Clr2Jvm.Interop
             var ret = env.CallStaticFloatMethodA(clazz, method, args);
             ThrowIfException();
             return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Float.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JFloat CallStaticFloatMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticFloatMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Float.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JFloat CallStaticFloatMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticFloatMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Float.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JFloat CallStaticFloatMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticFloatMethod(clazz, method, args);
         }
 
         /// <summary>
@@ -1186,8 +1627,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1214,8 +1655,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1250,6 +1691,69 @@ namespace Clr2Jvm.Interop
             var ret = env.CallStaticDoubleMethodA(clazz, method, args);
             ThrowIfException();
             return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Double.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JDouble CallStaticDoubleMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticDoubleMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Double.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JDouble CallStaticDoubleMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticDoubleMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Double.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JDouble CallStaticDoubleMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticDoubleMethod(clazz, method, args);
         }
 
         /// <summary>
@@ -1360,8 +1864,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1388,8 +1892,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1424,6 +1928,69 @@ namespace Clr2Jvm.Interop
             var ret = env.CallStaticObjectMethodA(clazz, method, args);
             ThrowIfException();
             return ret;
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Object.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <returns></returns>
+        public JObject CallStaticObjectMethod(JClass clazz, JMethodID method, JValue arg1)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[1];
+            args[0] = arg1;
+            return CallStaticObjectMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Object.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <returns></returns>
+        public JObject CallStaticObjectMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[2];
+            args[0] = arg1;
+            args[1] = arg2;
+            return CallStaticObjectMethod(clazz, method, args);
+        }
+
+        /// <summary>
+        /// Invokes the specified static method that returns a Java Object.
+        /// </summary>
+        /// <param name="clazz"></param>
+        /// <param name="method"></param>
+        /// <param name="arg1"></param>
+        /// <param name="arg2"></param>
+        /// <param name="arg3"></param>
+        /// <returns></returns>
+        public JObject CallStaticObjectMethod(JClass clazz, JMethodID method, JValue arg1, JValue arg2, JValue arg3)
+        {
+            if (clazz.IsNull)
+                throw new ArgumentNullException(nameof(clazz));
+            if (method.IsNull)
+                throw new ArgumentNullException(nameof(method));
+                
+            var args = (Span<JValue>)stackalloc JValue[3];
+            args[0] = arg1;
+            args[1] = arg2;
+            args[2] = arg3;
+            return CallStaticObjectMethod(clazz, method, args);
         }
 
         /// <summary>
@@ -1534,8 +2101,8 @@ namespace Clr2Jvm.Interop
                 throw new ArgumentNullException(nameof(name));
             if (args is null)
                 throw new ArgumentNullException(nameof(args));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {
@@ -1562,8 +2129,8 @@ namespace Clr2Jvm.Interop
         {
             if (string.IsNullOrWhiteSpace(name))
                 throw new ArgumentNullException(nameof(name));
-
-            var cls = new JClass();
+                
+            var cls = JClass.Null;
 
             try
             {

@@ -6,45 +6,83 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <None Update="Interop\Native\JArray.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>JArray.g.cs</LastGenOutput>
+        </None>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Compile Update="Interop\JavaEnvironment.Array.g.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JavaEnvironment.Array.tt</DependentUpon>
+        </Compile>
         <Compile Update="Interop\JavaEnvironment.CallMethod.g.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>JavaEnvironment.CallMethod.tt</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JavaEnvironment.CallMethod.tt</DependentUpon>
         </Compile>
         <Compile Update="Interop\JavaEnvironment.CallNonvirtualMethod.g.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>JavaEnvironment.CallNonvirtualMethod.tt</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JavaEnvironment.CallNonvirtualMethod.tt</DependentUpon>
         </Compile>
         <Compile Update="Interop\JavaEnvironment.CallStaticMethod.g.cs">
-          <DesignTime>True</DesignTime>
-          <AutoGen>True</AutoGen>
-          <DependentUpon>JavaEnvironment.CallStaticMethod.tt</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JavaEnvironment.CallStaticMethod.tt</DependentUpon>
+        </Compile>
+        <Compile Update="Interop\Native\JArray.g.cs">
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+            <DependentUpon>JArray.tt</DependentUpon>
         </Compile>
         <Compile Update="Interop\Native\JniEnv.g.cs">
             <DesignTime>True</DesignTime>
             <AutoGen>True</AutoGen>
             <DependentUpon>JniEnv.tt</DependentUpon>
         </Compile>
+        <Compile Update="Java\PrimitiveArray.g.cs">
+            <DependentUpon>PrimitiveArray.tt</DependentUpon>
+            <DesignTime>True</DesignTime>
+            <AutoGen>True</AutoGen>
+        </Compile>
     </ItemGroup>
 
     <ItemGroup>
-      <None Update="Interop\JavaEnvironment.CallNonvirtualMethod.tt">
-        <LastGenOutput>JavaEnvironment.CallNonvirtualMethod.g.cs</LastGenOutput>
-        <Generator>TextTemplatingFileGenerator</Generator>
-      </None>
-      <None Update="Interop\JavaEnvironment.CallMethod.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>JavaEnvironment.CallMethod.g.cs</LastGenOutput>
-      </None>
-      <None Update="Interop\JavaEnvironment.CallStaticMethod.tt">
-        <Generator>TextTemplatingFileGenerator</Generator>
-        <LastGenOutput>JavaEnvironment.CallStaticMethod.g.cs</LastGenOutput>
-      </None>
+        <None Update="Interop\JavaEnvironment.Array.tt">
+            <LastGenOutput>JavaEnvironment.Array.g.cs</LastGenOutput>
+            <Generator>TextTemplatingFileGenerator</Generator>
+        </None>
+        <None Update="Interop\JavaEnvironment.CallNonvirtualMethod.tt">
+            <LastGenOutput>JavaEnvironment.CallNonvirtualMethod.g.cs</LastGenOutput>
+            <Generator>TextTemplatingFileGenerator</Generator>
+        </None>
+        <None Update="Interop\JavaEnvironment.CallMethod.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>JavaEnvironment.CallMethod.g.cs</LastGenOutput>
+        </None>
+        <None Update="Interop\JavaEnvironment.CallStaticMethod.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>JavaEnvironment.CallStaticMethod.g.cs</LastGenOutput>
+        </None>
+        <None Update="Interop\Native\JniEnv.tt">
+            <Generator>TextTemplatingFileGenerator</Generator>
+            <LastGenOutput>JniEnv.g.cs</LastGenOutput>
+        </None>
+        <None Update="Java\PrimitiveArray.tt">
+            <LastGenOutput>PrimitiveArray.g.cs</LastGenOutput>
+            <Generator>TextTemplatingFileGenerator</Generator>
+        </None>
     </ItemGroup>
 
     <ItemGroup>
-      <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+        <Folder Include="Java\Lang\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
     </ItemGroup>
 
 </Project>
